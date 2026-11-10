@@ -2,6 +2,7 @@
 import copy
 import json
 from pathlib import Path
+from pipeline_branding import annotate
 
 ROOT = Path(__file__).resolve().parents[1]
 FOLDER = ROOT / 'reference/slack-agentcore/infra'
@@ -65,7 +66,7 @@ def templates():
         for key in list(template.get('Parameters', {})):
             if '"Ref": "' + key + '"' not in used and '${' + key + '}' not in used:
                 del template['Parameters'][key]
-    return copy.deepcopy(result)
+    return {name: annotate(copy.deepcopy(template)) for name, template in result.items()}
 
 if __name__ == '__main__':
     for name, value in templates().items():

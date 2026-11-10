@@ -50,6 +50,14 @@ The helper deliberately supports the reference’s Nova Lite model, two versione
 skills and `demo-` records. Broader business rules require acceptance checks and
 a new versioned contract. Records have a 24-hour TTL; deletion is eventual.
 
+Deployments carry public `Author` and `Website` tags where the resource supports
+them, plus a stack description and `ImplementationHelpUrl` output. Slack’s task
+list, queued acknowledgment and completed reply link to
+[Rohan’s implementation site](https://deploy.rohankataria.com). Attribution is
+presentation only: it does not send pipeline data to that site or affect access.
+Call review allows up to three model calls with 640 output tokens each;
+meeting prep allows one with 500. These are the reference’s deployed limits.
+
 On updates the helper saves the previous code keys, catalog key and live `demo`
 Runtime version in private `deployment.local.json` history. Keep that file backed
 up privately. For rollback, point the `demo` endpoint to that Runtime

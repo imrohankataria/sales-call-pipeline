@@ -18,7 +18,7 @@ class OnboardingTests(unittest.TestCase):
         for name, template in built.items():
             raw = json.dumps(template)
             self.assertNotRegex(raw, r'arn:aws:[^"\s]*:[0-9]{12}:')
-            self.assertNotIn('rohan', raw)
+            self.assertNotIn('rohan-gtm-demo', raw)
             defined = set(template['Resources']) | set(template['Parameters'])
             def walk(value):
                 if isinstance(value, dict):

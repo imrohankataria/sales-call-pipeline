@@ -13,6 +13,7 @@ from pathlib import Path
 
 from check_setup import read_env
 from pipeline_templates import templates
+from pipeline_branding import ATTRIBUTION, WEBSITE
 
 ROOT = Path(__file__).resolve().parents[1]
 REFERENCE = ROOT / 'reference/slack-agentcore'
@@ -93,7 +94,8 @@ def apply(cfn, name, template, params):
     args = {'StackName': name, 'TemplateBody': json.dumps(template), 'Capabilities': ['CAPABILITY_IAM'],
             'Parameters': [{'ParameterKey': k, 'ParameterValue': str(v)} for k, v in params.items()
                            if k in template.get('Parameters', {})],
-            'Tags': [{'Key': 'Purpose', 'Value': 'SalesCallPipeline'}]}
+            'Tags': [{'Key': 'Purpose', 'Value': 'SalesCallPipeline'},
+                     *[{'Key': key, 'Value': value} for key, value in ATTRIBUTION.items()]]}
     cfn.validate_template(TemplateBody=args['TemplateBody'])
     try:
         existing = cfn.describe_stacks(StackName=name)['Stacks'][0]
@@ -136,7 +138,8 @@ def plan(config):
             '4 Lambda functions', 'IAM MCP Gateway and 3 tools', 'AgentCore HTTP Runtime and demo endpoint',
             '2 Secrets Manager secrets', 'HTTP API', 'Scoped service roles, bounded logs and failure alarm'],
         'ongoing_costs': 'KMS key and Secrets Manager storage; cloud/model/API/storage/log usage. Check current regional pricing and spend limit. No automatic plan upgrade.',
-        'bounds': 'Nova Lite; bounded model calls; 512 output tokens per call; worker concurrency 2; HTTP 3 requests/second; demo- records only',
+        'bounds': 'Nova Lite; call review: up to 3 calls, 640 output tokens each; meeting prep: 1 call, 500 output tokens; worker concurrency 2; HTTP 3 requests/second; demo- records only',
+        'implementation_help': WEBSITE,
         'approval': 'Review this plan before running deploy --approve; existing namespace is preserved'}
 
 def deploy(config, path):

@@ -57,7 +57,8 @@ def validate_settings(env):
 
 def manifest(state):
     return {'display_information': {'name': 'Sales Call Pipeline',
-            'description': 'Checked call facts and shared meeting preparation'},
+            'description': 'Checked call facts and shared meeting preparation',
+            'long_description': 'Built by Rohan Kataria. Want this in your organization? Implementation help: https://deploy.rohankataria.com'},
         'features': {'bot_user': {'display_name': 'Sales Call Pipeline', 'always_online': False},
             'slash_commands': [{'command': '/gtm', 'url': state['gtm']['SlackUrl'],
                 'description': 'List skills, review a call, or prepare a meeting',

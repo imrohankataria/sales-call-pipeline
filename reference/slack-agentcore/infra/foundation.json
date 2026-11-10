@@ -1,6 +1,6 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
-  "Description": "Sales Call Pipeline foundation: dedicated single-Region deployment",
+  "Description": "Sales Call Pipeline foundation: dedicated single-Region deployment Implementation help: https://deploy.rohankataria.com",
   "Resources": {
     "Artifacts": {
       "Type": "AWS::S3::Bucket",
@@ -29,7 +29,17 @@
         },
         "VersioningConfiguration": {
           "Status": "Enabled"
-        }
+        },
+        "Tags": [
+          {
+            "Key": "Author",
+            "Value": "Rohan Kataria"
+          },
+          {
+            "Key": "Website",
+            "Value": "https://deploy.rohankataria.com"
+          }
+        ]
       }
     },
     "ArtifactPolicy": {
@@ -102,7 +112,17 @@
               }
             }
           ]
-        }
+        },
+        "Tags": [
+          {
+            "Key": "Author",
+            "Value": "Rohan Kataria"
+          },
+          {
+            "Key": "Website",
+            "Value": "https://deploy.rohankataria.com"
+          }
+        ]
       }
     },
     "AuditPolicy": {
@@ -199,6 +219,16 @@
             "ReadWriteType": "All",
             "IncludeManagementEvents": true
           }
+        ],
+        "Tags": [
+          {
+            "Key": "Author",
+            "Value": "Rohan Kataria"
+          },
+          {
+            "Key": "Website",
+            "Value": "https://deploy.rohankataria.com"
+          }
         ]
       },
       "DependsOn": "AuditPolicy"
@@ -246,7 +276,17 @@
               }
             }
           ]
-        }
+        },
+        "Tags": [
+          {
+            "Key": "Author",
+            "Value": "Rohan Kataria"
+          },
+          {
+            "Key": "Website",
+            "Value": "https://deploy.rohankataria.com"
+          }
+        ]
       }
     }
   },
@@ -276,7 +316,25 @@
           "Arn"
         ]
       }
+    },
+    "ImplementationHelpUrl": {
+      "Description": "Contact Rohan Kataria for implementation help.",
+      "Value": "https://deploy.rohankataria.com"
     }
   },
-  "Parameters": {}
+  "Parameters": {},
+  "Metadata": {
+    "ProjectAttribution": {
+      "Author": "Rohan Kataria",
+      "Website": "https://deploy.rohankataria.com"
+    },
+    "com.aws.cloudformation.Context": {
+      "ref": [
+        {
+          "at": "docs/prompt-deployment.md",
+          "has": "architecture, deployment bounds and public attribution"
+        }
+      ]
+    }
+  }
 }

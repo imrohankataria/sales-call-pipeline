@@ -1,6 +1,6 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
-  "Description": "Sales Call Pipeline gtm: dedicated single-Region deployment",
+  "Description": "Sales Call Pipeline gtm: dedicated single-Region deployment Implementation help: https://deploy.rohankataria.com",
   "Parameters": {
     "ArtifactBucket": {
       "Type": "String"
@@ -34,7 +34,17 @@
           "Fn::Sub": "${PipelineName}-slack"
         },
         "Description": "Dedicated demo Slack bot, request verification and user skill grants",
-        "SecretString": "{\"team_id\": \"\", \"allowed_users\": [], \"skill_grants\": {}, \"bot_token\": \"\", \"signing_secret\": \"\"}"
+        "SecretString": "{\"team_id\": \"\", \"allowed_users\": [], \"skill_grants\": {}, \"bot_token\": \"\", \"signing_secret\": \"\"}",
+        "Tags": [
+          {
+            "Key": "Author",
+            "Value": "Rohan Kataria"
+          },
+          {
+            "Key": "Website",
+            "Value": "https://deploy.rohankataria.com"
+          }
+        ]
       }
     },
     "AuthSecret": {
@@ -49,7 +59,17 @@
           "GenerateStringKey": "secret",
           "PasswordLength": 48,
           "ExcludePunctuation": true
-        }
+        },
+        "Tags": [
+          {
+            "Key": "Author",
+            "Value": "Rohan Kataria"
+          },
+          {
+            "Key": "Website",
+            "Value": "https://deploy.rohankataria.com"
+          }
+        ]
       }
     },
     "JobsTable": {
@@ -74,14 +94,34 @@
         "TimeToLiveSpecification": {
           "AttributeName": "ttl",
           "Enabled": true
-        }
+        },
+        "Tags": [
+          {
+            "Key": "Author",
+            "Value": "Rohan Kataria"
+          },
+          {
+            "Key": "Website",
+            "Value": "https://deploy.rohankataria.com"
+          }
+        ]
       }
     },
     "DeadLetterQueue": {
       "Type": "AWS::SQS::Queue",
       "Properties": {
         "MessageRetentionPeriod": 604800,
-        "SqsManagedSseEnabled": true
+        "SqsManagedSseEnabled": true,
+        "Tags": [
+          {
+            "Key": "Author",
+            "Value": "Rohan Kataria"
+          },
+          {
+            "Key": "Website",
+            "Value": "https://deploy.rohankataria.com"
+          }
+        ]
       }
     },
     "Queue": {
@@ -98,7 +138,17 @@
             ]
           },
           "maxReceiveCount": 3
-        }
+        },
+        "Tags": [
+          {
+            "Key": "Author",
+            "Value": "Rohan Kataria"
+          },
+          {
+            "Key": "Website",
+            "Value": "https://deploy.rohankataria.com"
+          }
+        ]
       }
     },
     "ToolsLogs": {
@@ -110,7 +160,17 @@
         "RetentionInDays": 7,
         "KmsKeyId": {
           "Ref": "LogsKeyArn"
-        }
+        },
+        "Tags": [
+          {
+            "Key": "Author",
+            "Value": "Rohan Kataria"
+          },
+          {
+            "Key": "Website",
+            "Value": "https://deploy.rohankataria.com"
+          }
+        ]
       }
     },
     "IngressLogs": {
@@ -122,7 +182,17 @@
         "RetentionInDays": 7,
         "KmsKeyId": {
           "Ref": "LogsKeyArn"
-        }
+        },
+        "Tags": [
+          {
+            "Key": "Author",
+            "Value": "Rohan Kataria"
+          },
+          {
+            "Key": "Website",
+            "Value": "https://deploy.rohankataria.com"
+          }
+        ]
       }
     },
     "WorkerLogs": {
@@ -134,7 +204,17 @@
         "RetentionInDays": 7,
         "KmsKeyId": {
           "Ref": "LogsKeyArn"
-        }
+        },
+        "Tags": [
+          {
+            "Key": "Author",
+            "Value": "Rohan Kataria"
+          },
+          {
+            "Key": "Website",
+            "Value": "https://deploy.rohankataria.com"
+          }
+        ]
       }
     },
     "BackendLogs": {
@@ -146,7 +226,17 @@
         "RetentionInDays": 7,
         "KmsKeyId": {
           "Ref": "LogsKeyArn"
-        }
+        },
+        "Tags": [
+          {
+            "Key": "Author",
+            "Value": "Rohan Kataria"
+          },
+          {
+            "Key": "Website",
+            "Value": "https://deploy.rohankataria.com"
+          }
+        ]
       }
     },
     "ToolsRole": {
@@ -203,6 +293,16 @@
               ]
             }
           }
+        ],
+        "Tags": [
+          {
+            "Key": "Author",
+            "Value": "Rohan Kataria"
+          },
+          {
+            "Key": "Website",
+            "Value": "https://deploy.rohankataria.com"
+          }
         ]
       }
     },
@@ -242,7 +342,17 @@
               "Ref": "AuthSecret"
             }
           }
-        }
+        },
+        "Tags": [
+          {
+            "Key": "Author",
+            "Value": "Rohan Kataria"
+          },
+          {
+            "Key": "Website",
+            "Value": "https://deploy.rohankataria.com"
+          }
+        ]
       },
       "DependsOn": "ToolsLogs"
     },
@@ -289,6 +399,16 @@
               ]
             }
           }
+        ],
+        "Tags": [
+          {
+            "Key": "Author",
+            "Value": "Rohan Kataria"
+          },
+          {
+            "Key": "Website",
+            "Value": "https://deploy.rohankataria.com"
+          }
         ]
       }
     },
@@ -309,7 +429,9 @@
         },
         "Tags": {
           "Purpose": "SalesCallPipeline",
-          "Data": "Synthetic"
+          "Data": "Synthetic",
+          "Author": "Rohan Kataria",
+          "Website": "https://deploy.rohankataria.com"
         }
       }
     },
@@ -516,6 +638,16 @@
               ]
             }
           }
+        ],
+        "Tags": [
+          {
+            "Key": "Author",
+            "Value": "Rohan Kataria"
+          },
+          {
+            "Key": "Website",
+            "Value": "https://deploy.rohankataria.com"
+          }
         ]
       }
     },
@@ -555,7 +687,17 @@
               "Ref": "Queue"
             }
           }
-        }
+        },
+        "Tags": [
+          {
+            "Key": "Author",
+            "Value": "Rohan Kataria"
+          },
+          {
+            "Key": "Website",
+            "Value": "https://deploy.rohankataria.com"
+          }
+        ]
       },
       "DependsOn": "IngressLogs"
     },
@@ -605,6 +747,16 @@
               ]
             }
           }
+        ],
+        "Tags": [
+          {
+            "Key": "Author",
+            "Value": "Rohan Kataria"
+          },
+          {
+            "Key": "Website",
+            "Value": "https://deploy.rohankataria.com"
+          }
         ]
       }
     },
@@ -641,7 +793,17 @@
               "Ref": "Queue"
             }
           }
-        }
+        },
+        "Tags": [
+          {
+            "Key": "Author",
+            "Value": "Rohan Kataria"
+          },
+          {
+            "Key": "Website",
+            "Value": "https://deploy.rohankataria.com"
+          }
+        ]
       },
       "DependsOn": "BackendLogs"
     },
@@ -750,6 +912,16 @@
               ]
             }
           }
+        ],
+        "Tags": [
+          {
+            "Key": "Author",
+            "Value": "Rohan Kataria"
+          },
+          {
+            "Key": "Website",
+            "Value": "https://deploy.rohankataria.com"
+          }
         ]
       }
     },
@@ -799,7 +971,17 @@
             }
           }
         },
-        "ReservedConcurrentExecutions": 2
+        "ReservedConcurrentExecutions": 2,
+        "Tags": [
+          {
+            "Key": "Author",
+            "Value": "Rohan Kataria"
+          },
+          {
+            "Key": "Website",
+            "Value": "https://deploy.rohankataria.com"
+          }
+        ]
       },
       "DependsOn": "WorkerLogs"
     },
@@ -822,7 +1004,17 @@
         "Enabled": true,
         "ScalingConfig": {
           "MaximumConcurrency": 2
-        }
+        },
+        "Tags": [
+          {
+            "Key": "Author",
+            "Value": "Rohan Kataria"
+          },
+          {
+            "Key": "Website",
+            "Value": "https://deploy.rohankataria.com"
+          }
+        ]
       }
     },
     "Api": {
@@ -831,7 +1023,11 @@
         "Name": {
           "Fn::Sub": "${PipelineName}-slack"
         },
-        "ProtocolType": "HTTP"
+        "ProtocolType": "HTTP",
+        "Tags": {
+          "Author": "Rohan Kataria",
+          "Website": "https://deploy.rohankataria.com"
+        }
       }
     },
     "IngressIntegration": {
@@ -905,6 +1101,10 @@
         "DefaultRouteSettings": {
           "ThrottlingRateLimit": 3,
           "ThrottlingBurstLimit": 5
+        },
+        "Tags": {
+          "Author": "Rohan Kataria",
+          "Website": "https://deploy.rohankataria.com"
         }
       }
     },
@@ -962,7 +1162,17 @@
         "EvaluationPeriods": 1,
         "Threshold": 1,
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
-        "TreatMissingData": "notBreaching"
+        "TreatMissingData": "notBreaching",
+        "Tags": [
+          {
+            "Key": "Author",
+            "Value": "Rohan Kataria"
+          },
+          {
+            "Key": "Website",
+            "Value": "https://deploy.rohankataria.com"
+          }
+        ]
       }
     }
   },
@@ -1038,6 +1248,24 @@
       "Value": {
         "Ref": "ToolsFunction"
       }
+    },
+    "ImplementationHelpUrl": {
+      "Description": "Contact Rohan Kataria for implementation help.",
+      "Value": "https://deploy.rohankataria.com"
+    }
+  },
+  "Metadata": {
+    "ProjectAttribution": {
+      "Author": "Rohan Kataria",
+      "Website": "https://deploy.rohankataria.com"
+    },
+    "com.aws.cloudformation.Context": {
+      "ref": [
+        {
+          "at": "docs/prompt-deployment.md",
+          "has": "architecture, deployment bounds and public attribution"
+        }
+      ]
     }
   }
 }

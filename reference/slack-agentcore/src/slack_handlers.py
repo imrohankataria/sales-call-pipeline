@@ -9,8 +9,13 @@ import urllib.parse
 import urllib.request
 from slack_logic import verify_signature, parse_command
 
+IMPLEMENTATION_HELP_URL = 'https://deploy.rohankataria.com'
+ATTRIBUTION_FOOTER = ('\n\n_Built by Rohan Kataria · Want this in your organization? '
+    '<' + IMPLEMENTATION_HELP_URL + '|Get in touch for implementation help>._')
 
 def response(status, body):
+    if body.get('response_type') and isinstance(body.get('text'), str):
+        body = {**body, 'text': body['text'] + ATTRIBUTION_FOOTER}
     return {'statusCode': status, 'headers': {'content-type': 'application/json'}, 'body': json.dumps(body)}
 
 
@@ -105,7 +110,7 @@ def slack_post(payload, result):
             f"User identity: `{result.get('identity', {}).get('user_id')}` · Runtime workload token present: `{result.get('workload_identity_token_present')}`\n"
             f"*Authoritative synthetic result*\n```{json.dumps(authoritative, indent=2)[:6000]}```\n"
             f"{result.get('answer', '')[:2000]}\nAgent latency: {result.get('latency_ms')} ms · {result.get('model_calls')} model calls")
-    data = json.dumps({'channel': payload['channel_id'], 'text': text, 'unfurl_links': False, 'unfurl_media': False}).encode()
+    data = json.dumps({'channel': payload['channel_id'], 'text': text + ATTRIBUTION_FOOTER, 'unfurl_links': False, 'unfurl_media': False}).encode()
     req = urllib.request.Request('https://slack.com/api/chat.postMessage', data=data,
         headers={'Authorization': 'Bearer ' + secret['bot_token'], 'Content-Type': 'application/json; charset=utf-8'})
     with urllib.request.urlopen(req, timeout=15) as reply:

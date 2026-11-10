@@ -5,12 +5,13 @@
     "src/gateway_tools.py": "Remove extra blank lines at EOF; no behavior change.",
     "src/pipeline_reference.py": "Remove extra blank lines at EOF; no behavior change.",
     "src/revision_reference.py": "Remove extra blank lines at EOF; no behavior change.",
-    "infra/*.json": "Parameterize the working deployment, remove interview-only API resources and private literals, keep code artifacts versioned, and bound worker concurrency."
+    "infra/*.json": "Parameterize the working deployment, remove interview-only API resources and private literals, keep code artifacts versioned, and bound worker concurrency.",
+    "src/slack_handlers.py": "Append a public Rohan Kataria implementation-help footer to Slack ephemeral and completed replies; preserve routing, authorization and job logic."
   },
   "files": {
     "src/slack_handlers.py": {
       "originalSha256": "51e9dc814d0610d6c79ac3dc725f8a6b5e4f2aeb245ed08900304d6ec2d33c32",
-      "publishedSha256": "51e9dc814d0610d6c79ac3dc725f8a6b5e4f2aeb245ed08900304d6ec2d33c32"
+      "publishedSha256": "7ec361c18dff79ecb508aad0aa7ca1538607333855745344afc68645c91a7d1b"
     },
     "src/slack_logic.py": {
       "originalSha256": "eb9b90d61496fdb8850e74398463a3c448d31deba151ebfd62868f7ccc2434fd",
@@ -98,19 +99,19 @@
     },
     "infra/foundation.json": {
       "originalSha256": "eb63839de2578a20b37c7bcd85fa517dad997f9c07a35da6a8262dab4fb64f77",
-      "publishedSha256": "c06bfce9509acbfb6ed66d507fe06f33d2c62f5ff3423712abeac2e65cf621d8"
+      "publishedSha256": "d69c7e9c5154610f89c87585795180b18be76a28ab5e921289fe896819b43814"
     },
     "infra/app.json": {
       "originalSha256": "9466ec959463a85483d59107d2a1c5b1cab264c7448f47145d3ac2135fcf2e67",
-      "publishedSha256": "0547a6406616d2e40487a4b5b6c77a4572e33fe38e3f83e4f3ce77c5cfd16eca"
+      "publishedSha256": "1a75e15dfe966adc6ae6a9b289c0e8aea7bd543e436ffb4df1685c47f9eb4f5e"
     },
     "infra/gtm.json": {
       "originalSha256": "b91115ad1028d28cb34f5a4c665a0a48aacfdad4ff0d64e4f47715641104696a",
-      "publishedSha256": "2a3bdbe49b26a97a69dc9d2e1a956f303f7d0cd414fa93aa0b8fbbf66257ca53"
+      "publishedSha256": "be838b8d7205eb28e2bbc88144f6d26c98ad3fbfe2e06ae5084a5ef77a8f9231"
     },
     "infra/app-gtm.json": {
       "originalSha256": "3dc7632866119d56d021d80f8901335c9e1b83c91c4bc88b951f8b306fc6ac10",
-      "publishedSha256": "9c901505d938d58ed2f8666083f42b140cea3e45f0d215495cd51743a759033b"
+      "publishedSha256": "5f7da1f813b322486ae422daa7adcfe2078a94494f821e2f06a2f02aef1201aa"
     }
   }
 }

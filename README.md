@@ -6,6 +6,8 @@ Review a transcript, save checked opportunity facts, and prepare the next meetin
 from the shared record. Python, AWS AgentCore, MCP tools and Slack, built from a
 pattern in Rohan’s production experience.
 
+[Want this in your organization? Contact Rohan for implementation help.](https://deploy.rohankataria.com)
+
 ## Watch the demo · 96 seconds
 
 https://github.com/user-attachments/assets/29b589b2-7bbe-4c6b-8fcb-314764c5ba94

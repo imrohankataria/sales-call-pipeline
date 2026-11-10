@@ -1,6 +1,6 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
-  "Description": "Sales Call Pipeline app: dedicated single-Region deployment",
+  "Description": "Sales Call Pipeline app: dedicated single-Region deployment Implementation help: https://deploy.rohankataria.com",
   "Parameters": {
     "ArtifactBucket": {
       "Type": "String"
@@ -48,7 +48,17 @@
         },
         "SSESpecification": {
           "SSEEnabled": true
-        }
+        },
+        "Tags": [
+          {
+            "Key": "Author",
+            "Value": "Rohan Kataria"
+          },
+          {
+            "Key": "Website",
+            "Value": "https://deploy.rohankataria.com"
+          }
+        ]
       }
     },
     "AgentRole": {
@@ -138,6 +148,16 @@
               ]
             }
           }
+        ],
+        "Tags": [
+          {
+            "Key": "Author",
+            "Value": "Rohan Kataria"
+          },
+          {
+            "Key": "Website",
+            "Value": "https://deploy.rohankataria.com"
+          }
         ]
       }
     },
@@ -190,7 +210,9 @@
         },
         "Tags": {
           "Purpose": "SalesCallPipeline",
-          "Data": "Synthetic"
+          "Data": "Synthetic",
+          "Author": "Rohan Kataria",
+          "Website": "https://deploy.rohankataria.com"
         }
       }
     },
@@ -210,7 +232,11 @@
           ]
         },
         "Name": "demo",
-        "Description": "Interview demonstration endpoint"
+        "Description": "Interview demonstration endpoint",
+        "Tags": {
+          "Author": "Rohan Kataria",
+          "Website": "https://deploy.rohankataria.com"
+        }
       }
     }
   },
@@ -243,6 +269,24 @@
       "Value": {
         "Ref": "CrmTable"
       }
+    },
+    "ImplementationHelpUrl": {
+      "Description": "Contact Rohan Kataria for implementation help.",
+      "Value": "https://deploy.rohankataria.com"
+    }
+  },
+  "Metadata": {
+    "ProjectAttribution": {
+      "Author": "Rohan Kataria",
+      "Website": "https://deploy.rohankataria.com"
+    },
+    "com.aws.cloudformation.Context": {
+      "ref": [
+        {
+          "at": "docs/prompt-deployment.md",
+          "has": "architecture, deployment bounds and public attribution"
+        }
+      ]
     }
   }
 }

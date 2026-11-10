@@ -56,3 +56,8 @@ Schema references: [Gateway](https://docs.aws.amazon.com/AWSCloudFormation/lates
 The client pins the supported MCP `2025-03-26` handshake and sends its protocol
 version on subsequent calls. It supports bounded JSON and SSE responses;
 it does not implement server-initiated sampling, elicitation or long-running tasks.
+# Public attribution
+
+The template includes Rohan Kataria attribution in supported resource tags,
+its description and the `ImplementationHelpUrl` output:
+https://deploy.rohankataria.com. This is a contact link, not a data destination.

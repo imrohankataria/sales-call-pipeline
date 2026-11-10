@@ -1,6 +1,6 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
-  "Description": "Synthetic AgentCore GTM starter tools. Runtime, ECR and S3 artifacts are deployed separately.",
+  "Description": "Synthetic AgentCore GTM starter tools. Runtime, ECR and S3 artifacts are deployed separately. Implementation help: https://deploy.rohankataria.com",
   "Parameters": {
     "ProjectName": {
       "Type": "String",
@@ -126,7 +126,17 @@
               }
             }
           ]
-        }
+        },
+        "Tags": [
+          {
+            "Key": "Author",
+            "Value": "Rohan Kataria"
+          },
+          {
+            "Key": "Website",
+            "Value": "https://deploy.rohankataria.com"
+          }
+        ]
       }
     },
     "CrmTable": {
@@ -151,7 +161,17 @@
         },
         "SSESpecification": {
           "SSEEnabled": true
-        }
+        },
+        "Tags": [
+          {
+            "Key": "Author",
+            "Value": "Rohan Kataria"
+          },
+          {
+            "Key": "Website",
+            "Value": "https://deploy.rohankataria.com"
+          }
+        ]
       }
     },
     "ToolsLogs": {
@@ -168,7 +188,17 @@
             "LogKey",
             "Arn"
           ]
-        }
+        },
+        "Tags": [
+          {
+            "Key": "Author",
+            "Value": "Rohan Kataria"
+          },
+          {
+            "Key": "Website",
+            "Value": "https://deploy.rohankataria.com"
+          }
+        ]
       }
     },
     "ToolsRole": {
@@ -217,6 +247,16 @@
                 }
               ]
             }
+          }
+        ],
+        "Tags": [
+          {
+            "Key": "Author",
+            "Value": "Rohan Kataria"
+          },
+          {
+            "Key": "Website",
+            "Value": "https://deploy.rohankataria.com"
           }
         ]
       }
@@ -271,7 +311,17 @@
               "Ref": "GatewayTargetName"
             }
           }
-        }
+        },
+        "Tags": [
+          {
+            "Key": "Author",
+            "Value": "Rohan Kataria"
+          },
+          {
+            "Key": "Website",
+            "Value": "https://deploy.rohankataria.com"
+          }
+        ]
       },
       "DependsOn": "ToolsLogs"
     },
@@ -323,6 +373,16 @@
               ]
             }
           }
+        ],
+        "Tags": [
+          {
+            "Key": "Author",
+            "Value": "Rohan Kataria"
+          },
+          {
+            "Key": "Website",
+            "Value": "https://deploy.rohankataria.com"
+          }
         ]
       }
     },
@@ -345,7 +405,9 @@
           "Project": {
             "Ref": "ProjectName"
           },
-          "Data": "Synthetic"
+          "Data": "Synthetic",
+          "Author": "Rohan Kataria",
+          "Website": "https://deploy.rohankataria.com"
         }
       }
     },
@@ -581,6 +643,16 @@
               ]
             }
           }
+        ],
+        "Tags": [
+          {
+            "Key": "Author",
+            "Value": "Rohan Kataria"
+          },
+          {
+            "Key": "Website",
+            "Value": "https://deploy.rohankataria.com"
+          }
         ]
       }
     }
@@ -640,6 +712,24 @@
       "Value": {
         "Ref": "GatewayTargetName"
       }
+    },
+    "ImplementationHelpUrl": {
+      "Description": "Contact Rohan Kataria for implementation help.",
+      "Value": "https://deploy.rohankataria.com"
+    }
+  },
+  "Metadata": {
+    "ProjectAttribution": {
+      "Author": "Rohan Kataria",
+      "Website": "https://deploy.rohankataria.com"
+    },
+    "com.aws.cloudformation.Context": {
+      "ref": [
+        {
+          "at": "infra/README.md",
+          "has": "deployment constraints and public attribution"
+        }
+      ]
     }
   }
 }
