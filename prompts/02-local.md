@@ -4,7 +4,8 @@
 Prepare and run this repository locally. Read AGENTS.md. Detect/install uv from
 its official source, then run:
 uv run --no-project --python 3.12 python scripts/bootstrap.py
-This creates a Python environment if missing, installs the pinned AWS dependencies,
+This creates a Python environment if missing, installs the pinned AWS dependencies
+including botocore[crt] for AWS CLI browser-login profiles,
 initializes private setup files, runs both test suites, and runs the local demo.
 Use the platform-specific .venv Python path for later helpers. Do not execute .env
 as a shell script. Preserve filled fields and leave unused tokens blank.
