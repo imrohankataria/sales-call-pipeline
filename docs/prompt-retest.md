@@ -3,12 +3,13 @@
 Tested in a separate Codex chat from a fresh public clone, without the original
 private source or deployment artifacts. The supplied AWS helper at `96e771e`
 completed a dedicated deployment and a real backend save-and-read workflow.
-The resources were kept as requested. A new Slack installation remains pending.
+The resources were kept as requested. Slack UI verification reused the user's
+existing GTM app, as requested; a second app was not installed.
 
 | Check | Observed result |
 |---|---|
 | Supplied bootstrap | Pass; Python 3.12 and AWS dependencies installed |
-| Portable/onboarding suite | 60 tests pass, including fresh-project capacity regressions |
+| Portable/onboarding suite | 61 tests pass, including fresh-project capacity and Slack manifest regressions |
 | Slack reference suite | 36 tests pass |
 | Local review → saved facts → meeting prep | Pass through the installed package |
 | Linux ARM64 packaging | Pass |
@@ -22,7 +23,9 @@ The resources were kept as requested. A new Slack installation remains pending.
 | Separate backend meeting prep | HTTP 202; reads the same three facts from one DynamoDB event through the read MCP tool |
 | Access boundary | Unsigned backend/Runtime requests rejected with 403; unsigned Gateway request rejected with 401 |
 | Public attribution | Stack tags/outputs and prepared Slack manifest point to `https://deploy.rohankataria.com` |
-| New Slack app | Supplied manifest generated; installation, private credentials and actual Slack UI requests not yet tested |
+| Existing Slack app | Actual `/gtm skills` private directory and one call-review/meeting-prep pair passed; both completed replies contain the implementation-help link |
+| Independent existing-app AWS check | Both jobs completed with Slack delivery receipts; call review saved exactly one CRM event, meeting prep read it, and service logs confirmed the three expected MCP tool calls with matching actor identity |
+| New Slack manifest | Corrected manifest passes Slack's UI validation with only `commands` and `chat:write`; no second app created or installed |
 
 The retest caught two setup defects that are fixed in the public helper: a
 missing AWS browser-login crypto dependency and a Lambda reservation that could
@@ -31,6 +34,12 @@ queue's two-job limit without reserving capacity. With explicit approval, the
 empty failed stack record was removed and the corrected helper retried while
 preserving the successful foundation, Runtime and CRM table. No quota increase,
 billing-plan upgrade or broader IAM access was needed.
+
+Slack's app-creation screen caught another onboarding defect: the supplied long
+description was shorter than App Settings' 174-character minimum. The helper now
+generates a valid description, a regression checks the documented limits, and
+the corrected manifest reached Slack's reviewed-settings screen without errors.
+The draft was canceled after validation. Existing app settings were not changed.
 
 The backend pair used three model calls and reported 3,212 tokens in total.
 These are execution observations, not a settled bill or a throughput claim.
@@ -43,8 +52,11 @@ The public prompts supply the commands, pinned dependencies, cloud templates,
 versioned skills and Slack manifest. To finish a new Slack installation, complete
 [the Slack prompt](../prompts/04-slack.md): workspace consent, private `.env`
 entry, approved member grants, and actual `/gtm` commands in an approved test
-channel. Backend execution, signed HTTP replay, and Slack UI delivery are
-different checks. Existing Slack success does not prove a fresh installation.
+channel. This retest used the existing app's deployed route for Slack and the
+dedicated new deployment for the fresh AWS/backend pair. These are separate
+checks; existing Slack success does not prove fresh OAuth installation. No
+second human member was available for a denied-access UI test; the offline and
+signed-fixture authorization checks cover that boundary separately.
 
 The approved demo remains unchanged. An anonymous public README request loaded
 the embedded MP4 successfully, and its bytes matched the approved video.

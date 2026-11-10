@@ -6,6 +6,9 @@ docs/setup.md and docs/prompt-deployment.md. Reuse the app when appropriate.
 Run scripts/pipeline_slack.py manifest with the .venv Python; use the private
 .local/slack-app-manifest.json to create/configure the app through Slack's UI.
 Use /gtm with the deployed signed HTTP Request URL, commands and chat:write only.
+Verify the manifest in Slack's UI; a provided long_description must be 174–4000
+characters. If reusing an app, verify its current endpoint and deployed route
+before changing anything. Record reused-app tests separately from a fresh install.
 I will complete workspace signup, admin consent and installation. Ask before
 changing an existing app's endpoint or expanding access. Verify the exact app,
 workspace and Request URL, and invite the bot to my selected demo channel.
@@ -16,10 +19,11 @@ tasks only for my selected member after I approve those grants and secret storag
 Never ask for tokens in chat, print them or put them in command arguments.
 Run scripts/pipeline_slack.py auth, then configure --approve after that authorization.
 Verify without bot messages first using scripts/pipeline_slack.py verify.
-After I authorize two labeled results in the named demo channel, run verify
---send-tests. Check real AWS jobs, MCP traces, saved facts, identity and Slack
-delivery receipts. This is a signed HTTP replay, not proof of Slack UI installation.
-Then actually send /gtm skills through Slack and check the private permitted list;
+After I authorize two labeled results in the named demo channel, use the actual
+Slack UI pair below. The helper verify --send-tests is an alternative signed HTTP
+replay that also posts two results; do not run both unless I approve four results.
+Check real AWS jobs, MCP traces, saved facts, identity and Slack delivery receipts.
+Actually send /gtm skills through Slack and check the private permitted list;
 run /gtm call-review demo-001 | The stage is Proposal. The renewal date is
 2027-02-01. The contract amount is USD 24000. Check the queued acknowledgment,
 completed reply and saved record. Send /gtm meeting-prep demo-001 separately and

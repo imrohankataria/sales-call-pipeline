@@ -91,5 +91,14 @@ class OnboardingTests(unittest.TestCase):
         self.assertFalse(value['settings']['socket_mode_enabled'])
         self.assertEqual(value['features']['slash_commands'][0]['command'], '/gtm')
 
+    def test_manifest_description_meets_slack_settings_limits(self):
+        import pipeline_slack
+        display = pipeline_slack.manifest({'gtm': {'SlackUrl': 'https://example.invalid/slack/events'}})['display_information']
+        # Slack App Settings rejects a provided long_description below 174 chars.
+        self.assertGreaterEqual(len(display['long_description']), 174)
+        self.assertLessEqual(len(display['long_description']), 4000)
+        self.assertLessEqual(len(display['description']), 140)
+        self.assertLessEqual(len(display['name']), 35)
+
 if __name__ == '__main__':
     unittest.main()
