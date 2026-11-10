@@ -5,7 +5,7 @@
     "src/gateway_tools.py": "Remove extra blank lines at EOF; no behavior change.",
     "src/pipeline_reference.py": "Remove extra blank lines at EOF; no behavior change.",
     "src/revision_reference.py": "Remove extra blank lines at EOF; no behavior change.",
-    "infra/*.json": "Parameterize the working deployment, remove interview-only API resources and private literals, keep code artifacts versioned, and bound worker concurrency.",
+    "infra/*.json": "Parameterize the working deployment, remove interview-only API resources and private literals, keep code artifacts versioned, add public attribution, and cap SQS workers at two using shared Lambda capacity without a reservation.",
     "src/slack_handlers.py": "Append a public Rohan Kataria implementation-help footer to Slack ephemeral and completed replies; preserve routing, authorization and job logic."
   },
   "files": {
@@ -103,15 +103,15 @@
     },
     "infra/app.json": {
       "originalSha256": "9466ec959463a85483d59107d2a1c5b1cab264c7448f47145d3ac2135fcf2e67",
-      "publishedSha256": "1a75e15dfe966adc6ae6a9b289c0e8aea7bd543e436ffb4df1685c47f9eb4f5e"
+      "publishedSha256": "8862683d52066d79d0f8e3c5dd27e524e549e804219b6ace93f2cd0f7723d2b9"
     },
     "infra/gtm.json": {
       "originalSha256": "b91115ad1028d28cb34f5a4c665a0a48aacfdad4ff0d64e4f47715641104696a",
-      "publishedSha256": "be838b8d7205eb28e2bbc88144f6d26c98ad3fbfe2e06ae5084a5ef77a8f9231"
+      "publishedSha256": "c82172fc2a49291c019ab67d2bb590d89b8baaf25850811a3571ffc9f6f4ca95"
     },
     "infra/app-gtm.json": {
       "originalSha256": "3dc7632866119d56d021d80f8901335c9e1b83c91c4bc88b951f8b306fc6ac10",
-      "publishedSha256": "5f7da1f813b322486ae422daa7adcfe2078a94494f821e2f06a2f02aef1201aa"
+      "publishedSha256": "689f177918288221627ffc3dc90b8b0695effb58af9e0fa8987b403d61ae2b7e"
     }
   }
 }
