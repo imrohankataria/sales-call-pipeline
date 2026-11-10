@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900" role="img" aria-labelledby="title desc">
+  <title id="title">Sales Call Pipeline portable architecture</title>
+  <desc id="desc">Layered cloud reference path. A caller authenticates through AWS IAM to our workflow in AgentCore Runtime. Versioned skills route to model proposals or read-only preparation. The workflow validates findings and invokes MCP tools through an IAM Gateway, then a validation Lambda and DynamoDB. User OAuth and Slack are future extensions.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#42536a"/></marker>
+    <style>
+      text { font-family: Arial, sans-serif; fill: #17263c; }
+      .title { font-size: 30px; font-weight: 700; }
+      .label { font-size: 21px; font-weight: 700; }
+      .body { font-size: 17px; }
+      .small { font-size: 14px; fill: #465770; }
+      .layer { fill: #f3f6fb; stroke: #d5deeb; stroke-width: 1.5; }
+      .box { fill: white; stroke: #b0c0d6; stroke-width: 1.5; }
+      .arrow { fill: none; stroke: #42536a; stroke-width: 2; marker-end: url(#arrow); }
+    </style>
+  </defs>
+  <rect width="1200" height="900" fill="#ffffff"/>
+  <text x="40" y="48" class="title">One GTM agent. Reusable skills. Scoped tools.</text>
+  <text x="40" y="77" class="body">Synthetic reference deployment • local SQLite mode also available</text>
+
+  <rect x="40" y="104" width="890" height="96" rx="12" class="layer"/>
+  <text x="60" y="133" class="label">1 · Business request</text>
+  <text x="60" y="161" class="body">Review a sales call → persist supported facts → prepare the next meeting</text>
+  <text x="60" y="184" class="small">CLI / API caller • temporary AWS credentials • InvokeAgentRuntime</text>
+  <path d="M 485 200 V 245" class="arrow"/>
+  <text x="501" y="229" class="small">IAM authenticates caller</text>
+
+  <rect x="40" y="245" width="890" height="198" rx="12" fill="#edf2ff" stroke="#8099d3" stroke-width="1.5"/>
+  <text x="60" y="275" class="label">2 · AgentCore Runtime hosts our Python harness</text>
+  <text x="60" y="300" class="small">Route enabled skills • load reviewed SKILL.md version • enforce evidence before writes</text>
+  <rect x="60" y="315" width="255" height="91" rx="8" class="box"/>
+  <text x="77" y="344" class="label">call-review v1.0.0</text>
+  <text x="77" y="369" class="body">Propose + validate facts</text>
+  <text x="77" y="391" class="small">Write tool: commit_sales</text>
+  <rect x="337" y="315" width="255" height="91" rx="8" class="box"/>
+  <text x="354" y="344" class="label">meeting-prep v1.0.0</text>
+  <text x="354" y="369" class="body">Read + format saved facts</text>
+  <text x="354" y="391" class="small">Read tool: get_opportunity</text>
+  <rect x="654" y="315" width="256" height="91" rx="8" class="box"/>
+  <text x="671" y="344" class="label">Amazon Bedrock</text>
+  <text x="671" y="369" class="body">Separate model service</text>
+  <text x="671" y="391" class="small">One bounded proposal call</text>
+  <path d="M 188 406 V 414 H 782 V 406" class="arrow"/>
+  <text x="62" y="437" class="small">Model output is untrusted; deterministic checks control accepted facts</text>
+  <path d="M 485 443 V 493" class="arrow"/>
+  <text x="501" y="473" class="small">Runtime role · SigV4 · optional workload token</text>
+
+  <rect x="40" y="493" width="890" height="94" rx="12" fill="#edf2ff" stroke="#8099d3" stroke-width="1.5"/>
+  <text x="60" y="524" class="label">3 · AgentCore Gateway exposes MCP tools</text>
+  <text x="60" y="551" class="body">crm___commit_sales  /  crm___get_opportunity</text>
+  <text x="60" y="574" class="small">IAM inbound authentication • reviewed tool schemas • Gateway role invokes only the tool Lambda</text>
+  <path d="M 485 587 V 630" class="arrow"/>
+  <text x="501" y="614" class="small">GATEWAY_IAM_ROLE</text>
+
+  <rect x="40" y="630" width="890" height="113" rx="12" class="layer"/>
+  <text x="60" y="660" class="label">4 · Application tools and persisted state</text>
+  <rect x="60" y="675" width="372" height="48" rx="8" class="box"/>
+  <text x="76" y="696" class="body">Lambda validates again</text>
+  <text x="76" y="715" class="small">Gateway tool context + evidence + request intent</text>
+  <path d="M 432 699 H 518" class="arrow"/>
+  <rect x="520" y="675" width="390" height="48" rx="8" class="box"/>
+  <text x="536" y="696" class="body">DynamoDB: synthetic CRM + ledger</text>
+  <text x="536" y="715" class="small">Atomic writes • replay result • configured expiry</text>
+  <path d="M 40 699 H 20 V 153 H 40" class="arrow"/>
+
+  <rect x="954" y="104" width="206" height="336" rx="12" fill="#f5f1ff" stroke="#c7b7e4"/>
+  <text x="971" y="135" class="label">Release path</text>
+  <text x="971" y="167" class="body">Git repository</text>
+  <text x="971" y="193" class="small">Code + catalog + skills</text>
+  <text x="971" y="219" class="small">Review → acceptance tests</text>
+  <text x="971" y="245" class="small">Versioned Python package</text>
+  <text x="971" y="271" class="small">ARM64 image → ECR</text>
+  <text x="971" y="297" class="small">Tool ZIP → private S3</text>
+  <text x="971" y="323" class="small">Runtime version + endpoint</text>
+  <text x="971" y="350" class="small">Pin matching artifacts</text>
+  <text x="971" y="377" class="small">Rollback as one release</text>
+  <path d="M 954 398 H 930" class="arrow"/>
+
+  <rect x="954" y="493" width="206" height="250" rx="12" class="layer"/>
+  <text x="971" y="524" class="label">Operations</text>
+  <text x="971" y="556" class="body">CloudWatch logs</text>
+  <text x="971" y="582" class="small">Request IDs + durations</text>
+  <text x="971" y="608" class="small">Model usage metadata</text>
+  <text x="971" y="634" class="small">KMS + retention</text>
+  <text x="971" y="678" class="small">Extend with traces, alarms,</text>
+  <text x="971" y="700" class="small">evaluation + approval gates</text>
+  <path d="M 930 430 H 942 V 556 H 954" class="arrow"/>
+  <path d="M 930 699 H 954" class="arrow"/>
+
+  <rect x="40" y="770" width="1120" height="96" rx="12" fill="#fff8e9" stroke="#e6cd90"/>
+  <text x="60" y="800" class="label">Identity boundary</text>
+  <text x="60" y="827" class="body">Skills hold instructions. IAM roles grant AWS resource access. An enabled-skill list is configuration.</text>
+  <text x="60" y="850" class="small">Slack user mapping, per-user skill grants and enterprise OAuth delegation are extensions; this starter does not implement them.</text>
+</svg>

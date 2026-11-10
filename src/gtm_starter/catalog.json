@@ -1,0 +1,4 @@
+{
+  "call-review": {"version": "1.0.0", "path": "skills/call-review/1.0.0/SKILL.md", "tools": ["commit_sales"]},
+  "meeting-prep": {"version": "1.0.0", "path": "skills/meeting-prep/1.0.0/SKILL.md", "tools": ["get_opportunity"]}
+}

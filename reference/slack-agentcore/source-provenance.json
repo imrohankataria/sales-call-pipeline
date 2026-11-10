@@ -1,0 +1,99 @@
+{
+  "origin": "AWS and Slack reference implementation used for the product demo",
+  "changes": {
+    "src/agent_app.py": "Replace the deployment-specific ExpectedBucketOwner literal with required AWS_ACCOUNT_ID configuration.",
+    "src/gateway_tools.py": "Remove extra blank lines at EOF; no behavior change.",
+    "src/pipeline_reference.py": "Remove extra blank lines at EOF; no behavior change.",
+    "src/revision_reference.py": "Remove extra blank lines at EOF; no behavior change."
+  },
+  "files": {
+    "src/slack_handlers.py": {
+      "originalSha256": "51e9dc814d0610d6c79ac3dc725f8a6b5e4f2aeb245ed08900304d6ec2d33c32",
+      "publishedSha256": "51e9dc814d0610d6c79ac3dc725f8a6b5e4f2aeb245ed08900304d6ec2d33c32"
+    },
+    "src/slack_logic.py": {
+      "originalSha256": "eb9b90d61496fdb8850e74398463a3c448d31deba151ebfd62868f7ccc2434fd",
+      "publishedSha256": "eb9b90d61496fdb8850e74398463a3c448d31deba151ebfd62868f7ccc2434fd"
+    },
+    "src/execution_identity.py": {
+      "originalSha256": "c6f33724a883610969de0c09fd2f507dbd5796a768415297a53bee26132101a6",
+      "publishedSha256": "c6f33724a883610969de0c09fd2f507dbd5796a768415297a53bee26132101a6"
+    },
+    "src/gtm_logic.py": {
+      "originalSha256": "0751b431a5124af2ac60ad602f1f8b58c837ee14436037758dc2f0fc9aedc590",
+      "publishedSha256": "0751b431a5124af2ac60ad602f1f8b58c837ee14436037758dc2f0fc9aedc590"
+    },
+    "src/agent_logic.py": {
+      "originalSha256": "d0f972803ca94d894ed6be54a187ebdae4b85bcd23234d623a18b42f81dcd434",
+      "publishedSha256": "d0f972803ca94d894ed6be54a187ebdae4b85bcd23234d623a18b42f81dcd434"
+    },
+    "src/skill_catalog.py": {
+      "originalSha256": "9c8f576220d964c0e087a94c9b77cab875fc4a22cc87413594770e7ea06f9a9b",
+      "publishedSha256": "9c8f576220d964c0e087a94c9b77cab875fc4a22cc87413594770e7ea06f9a9b"
+    },
+    "src/gateway_client.py": {
+      "originalSha256": "343523dfd8ad14d535d1bb59962cd98eccb62ab3afab971c541893b0bca09038",
+      "publishedSha256": "343523dfd8ad14d535d1bb59962cd98eccb62ab3afab971c541893b0bca09038"
+    },
+    "src/gateway_tools.py": {
+      "originalSha256": "267981010b240fd8ed68df340dd35d4ffe16c6070960a5e66a8e24a3707cc543",
+      "publishedSha256": "0ed342ca5eaefcf4a4dda5ba72159af605235981a57e6eb8d28386eaf2f0c30c"
+    },
+    "src/agent_app.py": {
+      "originalSha256": "4cbdd08a6139a7844f34e6dd8f36028ebbb2684490b8c967f5e55e5b857a1106",
+      "publishedSha256": "4dc5a78a4e1875ad8104c251f1c40083e8fffe5dc7b041875799385aeabae53b"
+    },
+    "src/signed_api.py": {
+      "originalSha256": "c293e0a6352f15cbda78a1af6716c1e5472cdb38309460c06e87c003cdd84dbe",
+      "publishedSha256": "c293e0a6352f15cbda78a1af6716c1e5472cdb38309460c06e87c003cdd84dbe"
+    },
+    "src/exercise_api.py": {
+      "originalSha256": "92b218148b285dbecf88f6993b3c497593bcaf0637dd82970eb02c3ff081f6e8",
+      "publishedSha256": "92b218148b285dbecf88f6993b3c497593bcaf0637dd82970eb02c3ff081f6e8"
+    },
+    "src/practice_answers.py": {
+      "originalSha256": "753cba9bd60973a5710ce67a0a20cee3a8b8ed55949f0199c44a1a0dcb94523d",
+      "publishedSha256": "753cba9bd60973a5710ce67a0a20cee3a8b8ed55949f0199c44a1a0dcb94523d"
+    },
+    "src/support.py": {
+      "originalSha256": "f449b79f4e9ce69b8c7aa4eb217cb674584d4e4da441b85d4fc4e2cb8fd8c74d",
+      "publishedSha256": "f449b79f4e9ce69b8c7aa4eb217cb674584d4e4da441b85d4fc4e2cb8fd8c74d"
+    },
+    "src/agent_reference.py": {
+      "originalSha256": "09cd99aa403f99b387d53086654cf42d468a27f30bf64d0232e48a0fcb7f739c",
+      "publishedSha256": "09cd99aa403f99b387d53086654cf42d468a27f30bf64d0232e48a0fcb7f739c"
+    },
+    "src/pipeline_reference.py": {
+      "originalSha256": "ab73e3cc87f25b58abb2584e32275ee2e2b7a1ee5b634b68096949f7199d2dd4",
+      "publishedSha256": "8d811bbcd25f9e47ba9e03c260be46f0fd29095d6315bf5e71d9593917f035f2"
+    },
+    "src/revision_reference.py": {
+      "originalSha256": "26addf04fb1159bd87de2950180aab31637e547b6655da76b36bed7d6c9496a7",
+      "publishedSha256": "63bee9fe9e6558e68cc9e2f73ef90d45e8b8d677e28f7af8bb8aedc1d9201169"
+    },
+    "tests/test_gtm.py": {
+      "originalSha256": "2a373ed5555eafae77a39276e28691aa1299457fde4f5b7a09e5f72c790b483f",
+      "publishedSha256": "2a373ed5555eafae77a39276e28691aa1299457fde4f5b7a09e5f72c790b483f"
+    },
+    "tests/test_agent.py": {
+      "originalSha256": "c4ee6b736ffd69e6541bbe7d8ba235dcc767540f302ce4b8c04f2b54904d1b0d",
+      "publishedSha256": "c4ee6b736ffd69e6541bbe7d8ba235dcc767540f302ce4b8c04f2b54904d1b0d"
+    },
+    "tests/test_idempotency.py": {
+      "originalSha256": "df8b76d91c1dc5d80432efd15e4653c2ba2d9e2b4ed738bbd76fa102c0ff67ab",
+      "publishedSha256": "df8b76d91c1dc5d80432efd15e4653c2ba2d9e2b4ed738bbd76fa102c0ff67ab"
+    },
+    "tests/test_api.py": {
+      "originalSha256": "9b64682a34a8da9ecfe5a44082787d771b84d365713e1c2e1509d8fa7e1ec7cd",
+      "publishedSha256": "9b64682a34a8da9ecfe5a44082787d771b84d365713e1c2e1509d8fa7e1ec7cd"
+    },
+    "skills/call-review/1.0.0/SKILL.md": {
+      "originalSha256": "0f46882f6d239288675713eb74426b530633dd94a4dd0b8319957f7e778e841b",
+      "publishedSha256": "0f46882f6d239288675713eb74426b530633dd94a4dd0b8319957f7e778e841b"
+    },
+    "skills/meeting-prep/1.0.0/SKILL.md": {
+      "originalSha256": "ac75bc90de6c3318ebf7ff6b7fc4a7f4618b95870b0e4a89727361021064a9ed",
+      "publishedSha256": "ac75bc90de6c3318ebf7ff6b7fc4a7f4618b95870b0e4a89727361021064a9ed"
+    }
+  }
+}

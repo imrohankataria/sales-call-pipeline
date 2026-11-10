@@ -1,0 +1,13 @@
+{
+  "project_name": "gtm-starter",
+  "runtime_name": "gtm_starter",
+  "aws_region": "us-east-2",
+  "aws_profile": "demo",
+  "model_id": "amazon.nova-lite-v1:0",
+  "endpoint_name": "demo",
+  "gateway_target": "crm",
+  "enabled_skills": ["call-review", "meeting-prep"],
+  "max_output_tokens": 512,
+  "record_ttl_seconds": 86400,
+  "log_retention_days": 7
+}

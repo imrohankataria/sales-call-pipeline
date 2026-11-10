@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agentcore-gtm-starter"
+version = "0.1.0"
+description = "Reusable sales call review and meeting preparation workflows for Amazon Bedrock AgentCore"
+readme = "README.md"
+requires-python = ">=3.12"
+license = "MIT"
+dependencies = []
+
+[project.urls]
+Repository = "https://github.com/imrohankataria/sales-call-pipeline"
+Documentation = "https://github.com/imrohankataria/sales-call-pipeline#readme"
+Issues = "https://github.com/imrohankataria/sales-call-pipeline/issues"
+
+[project.optional-dependencies]
+aws = ["bedrock-agentcore==1.25.3", "boto3==1.43.123"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+gtm_starter = ["catalog.json", "skills/*/*/SKILL.md"]

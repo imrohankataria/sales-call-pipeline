@@ -1,0 +1,113 @@
+WEBVTT
+
+1
+00:00:01.200 --> 00:00:02.980
+Imagine your best sales call.
+
+2
+00:00:03.100 --> 00:00:07.300
+Then come the notes, missing context, and the account executive asking, “Who
+
+3
+00:00:07.300 --> 00:00:07.980
+did we speak to?”
+
+4
+00:00:08.160 --> 00:00:10.060
+I built this workflow in production.
+
+5
+00:00:10.320 --> 00:00:13.020
+This repository brings that approach to life on AWS.
+
+6
+00:00:13.340 --> 00:00:17.260
+In Slack, reps can see their permitted skills, then choose call review.
+
+7
+00:00:17.620 --> 00:00:22.060
+The server verifies the request and their access, queues the transcript, and
+
+8
+00:00:22.060 --> 00:00:24.020
+a worker calls AgentCore.
+
+9
+00:00:24.020 --> 00:00:28.720
+AgentCore Runtime hosts our Python workflow, which loads a versioned skill file
+
+10
+00:00:28.720 --> 00:00:29.300
+from S3.
+
+11
+00:00:29.460 --> 00:00:32.700
+That playbook tells the model how to review the call, while Python
+
+12
+00:00:32.700 --> 00:00:34.060
+controls the tools.
+
+13
+00:00:34.320 --> 00:00:38.860
+Python asks Nova Lite, the language model in Bedrock, to propose facts
+
+14
+00:00:38.860 --> 00:00:40.520
+with supporting quotes from the transcript.
+
+15
+00:00:41.000 --> 00:00:44.260
+MCP gives Python one standard interface to the data tools.
+
+16
+00:00:44.800 --> 00:00:48.780
+AgentCore Gateway routes each call to code that checks permission and evidence
+
+17
+00:00:48.780 --> 00:00:50.140
+before saving in DynamoDB.
+
+18
+00:00:50.540 --> 00:00:53.780
+The result returns through Python to the worker, which posts it back
+
+19
+00:00:53.780 --> 00:00:54.160
+to Slack.
+
+20
+00:00:54.500 --> 00:00:57.480
+When the rep asks for meeting prep in Slack, the same engine
+
+21
+00:00:57.480 --> 00:01:01.220
+loads that skill, reads the saved record through MCP, and returns a
+
+22
+00:01:01.220 --> 00:01:01.380
+brief.
+
+23
+00:01:01.580 --> 00:01:06.520
+In my production workflow, Salesforce held the shared record, including buyer intent,
+
+24
+00:01:06.840 --> 00:01:08.460
+next steps and call warmth.
+
+25
+00:01:08.720 --> 00:01:14.320
+That context helps account executives prepare and managers coach from wins and
+
+26
+00:01:14.320 --> 00:01:14.660
+losses.
+
+27
+00:01:14.980 --> 00:01:19.720
+With less busywork and fewer handoffs, let your sales organization do what
+
+28
+00:01:19.720 --> 00:01:21.880
+it does best: win sales for you.

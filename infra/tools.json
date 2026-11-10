@@ -1,0 +1,645 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "Synthetic AgentCore GTM starter tools. Runtime, ECR and S3 artifacts are deployed separately.",
+  "Parameters": {
+    "ProjectName": {
+      "Type": "String",
+      "Default": "gtm-starter",
+      "AllowedPattern": "[a-z][a-z0-9-]{0,31}",
+      "Description": "Dedicated deployment prefix; no personal identifiers."
+    },
+    "RuntimeName": {
+      "Type": "String",
+      "Default": "gtm_starter",
+      "AllowedPattern": "[a-zA-Z][a-zA-Z0-9_]{0,31}"
+    },
+    "ArtifactBucket": {
+      "Type": "String",
+      "Description": "Existing private encrypted S3 bucket in this Region."
+    },
+    "ToolsObjectKey": {
+      "Type": "String",
+      "Description": "Content-addressed object key for build/tools.zip."
+    },
+    "ToolsObjectVersion": {
+      "Type": "String",
+      "Default": "",
+      "Description": "Optional S3 version ID for the exact tool release."
+    },
+    "EcrRepositoryName": {
+      "Type": "String",
+      "Default": "gtm-starter",
+      "Description": "Existing private ECR repository in this Region."
+    },
+    "ModelId": {
+      "Type": "String",
+      "Default": "amazon.nova-lite-v1:0",
+      "AllowedPattern": "[a-zA-Z0-9.:-]+",
+      "Description": "In-Region foundation-model ID. Inference profiles require a separately reviewed IAM policy."
+    },
+    "LogRetentionDays": {
+      "Type": "Number",
+      "Default": 7,
+      "AllowedValues": [
+        1,
+        3,
+        5,
+        7,
+        14,
+        30
+      ]
+    },
+    "RecordTtlSeconds": {
+      "Type": "Number",
+      "Default": 86400,
+      "MinValue": 3600,
+      "MaxValue": 604800
+    },
+    "GatewayTargetName": {
+      "Type": "String",
+      "Default": "crm",
+      "AllowedPattern": "[a-zA-Z][a-zA-Z0-9_-]{0,31}"
+    }
+  },
+  "Conditions": {
+    "HasObjectVersion": {
+      "Fn::Not": [
+        {
+          "Fn::Equals": [
+            {
+              "Ref": "ToolsObjectVersion"
+            },
+            ""
+          ]
+        }
+      ]
+    }
+  },
+  "Resources": {
+    "LogKey": {
+      "Type": "AWS::KMS::Key",
+      "Properties": {
+        "Description": "Dedicated starter log encryption; incurs KMS charges.",
+        "EnableKeyRotation": true,
+        "PendingWindowInDays": 7,
+        "KeyPolicy": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "kms:*"
+              ],
+              "Resource": "*",
+              "Principal": {
+                "AWS": {
+                  "Fn::Sub": "arn:${AWS::Partition}:iam::${AWS::AccountId}:root"
+                }
+              }
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "kms:Encrypt",
+                "kms:Decrypt",
+                "kms:ReEncrypt*",
+                "kms:GenerateDataKey*",
+                "kms:DescribeKey"
+              ],
+              "Resource": "*",
+              "Principal": {
+                "Service": {
+                  "Fn::Sub": "logs.${AWS::Region}.amazonaws.com"
+                }
+              },
+              "Condition": {
+                "ArnLike": {
+                  "kms:EncryptionContext:aws:logs:arn": [
+                    {
+                      "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/${ProjectName}-tools"
+                    },
+                    {
+                      "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/bedrock-agentcore/runtimes/${RuntimeName}-*"
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "CrmTable": {
+      "Type": "AWS::DynamoDB::Table",
+      "Properties": {
+        "BillingMode": "PAY_PER_REQUEST",
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "pk",
+            "AttributeType": "S"
+          }
+        ],
+        "KeySchema": [
+          {
+            "AttributeName": "pk",
+            "KeyType": "HASH"
+          }
+        ],
+        "TimeToLiveSpecification": {
+          "AttributeName": "expires_at",
+          "Enabled": true
+        },
+        "SSESpecification": {
+          "SSEEnabled": true
+        }
+      }
+    },
+    "ToolsLogs": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": {
+          "Fn::Sub": "/aws/lambda/${ProjectName}-tools"
+        },
+        "RetentionInDays": {
+          "Ref": "LogRetentionDays"
+        },
+        "KmsKeyId": {
+          "Fn::GetAtt": [
+            "LogKey",
+            "Arn"
+          ]
+        }
+      }
+    },
+    "ToolsRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              },
+              "Action": "sts:AssumeRole"
+            }
+          ]
+        },
+        "Policies": [
+          {
+            "PolicyName": "ScopedStarterAccess",
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "logs:CreateLogStream",
+                    "logs:PutLogEvents"
+                  ],
+                  "Resource": {
+                    "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/${ProjectName}-tools:log-stream:*"
+                  }
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "dynamodb:GetItem",
+                    "dynamodb:PutItem"
+                  ],
+                  "Resource": {
+                    "Fn::GetAtt": [
+                      "CrmTable",
+                      "Arn"
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "ToolsFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "FunctionName": {
+          "Fn::Sub": "${ProjectName}-tools"
+        },
+        "Runtime": "python3.12",
+        "Architectures": [
+          "arm64"
+        ],
+        "Handler": "gtm_starter.cloud.lambda_handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "ToolsRole",
+            "Arn"
+          ]
+        },
+        "Timeout": 30,
+        "MemorySize": 256,
+        "Code": {
+          "S3Bucket": {
+            "Ref": "ArtifactBucket"
+          },
+          "S3Key": {
+            "Ref": "ToolsObjectKey"
+          },
+          "S3ObjectVersion": {
+            "Fn::If": [
+              "HasObjectVersion",
+              {
+                "Ref": "ToolsObjectVersion"
+              },
+              {
+                "Ref": "AWS::NoValue"
+              }
+            ]
+          }
+        },
+        "Environment": {
+          "Variables": {
+            "TABLE_NAME": {
+              "Ref": "CrmTable"
+            },
+            "RECORD_TTL_SECONDS": {
+              "Ref": "RecordTtlSeconds"
+            },
+            "GATEWAY_TARGET": {
+              "Ref": "GatewayTargetName"
+            }
+          }
+        }
+      },
+      "DependsOn": "ToolsLogs"
+    },
+    "GatewayRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "bedrock-agentcore.amazonaws.com"
+              },
+              "Action": "sts:AssumeRole",
+              "Condition": {
+                "StringEquals": {
+                  "aws:SourceAccount": {
+                    "Ref": "AWS::AccountId"
+                  }
+                },
+                "ArnLike": {
+                  "aws:SourceArn": {
+                    "Fn::Sub": "arn:${AWS::Partition}:bedrock-agentcore:${AWS::Region}:${AWS::AccountId}:gateway/${ProjectName}-*"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "Policies": [
+          {
+            "PolicyName": "ScopedStarterAccess",
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "lambda:InvokeFunction"
+                  ],
+                  "Resource": {
+                    "Fn::GetAtt": [
+                      "ToolsFunction",
+                      "Arn"
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "Gateway": {
+      "Type": "AWS::BedrockAgentCore::Gateway",
+      "Properties": {
+        "Name": {
+          "Ref": "ProjectName"
+        },
+        "AuthorizerType": "AWS_IAM",
+        "ProtocolType": "MCP",
+        "RoleArn": {
+          "Fn::GetAtt": [
+            "GatewayRole",
+            "Arn"
+          ]
+        },
+        "Description": "Synthetic GTM tools; caller authentication uses IAM.",
+        "Tags": {
+          "Project": {
+            "Ref": "ProjectName"
+          },
+          "Data": "Synthetic"
+        }
+      }
+    },
+    "Target": {
+      "Type": "AWS::BedrockAgentCore::GatewayTarget",
+      "Properties": {
+        "GatewayIdentifier": {
+          "Fn::GetAtt": [
+            "Gateway",
+            "GatewayIdentifier"
+          ]
+        },
+        "Name": {
+          "Ref": "GatewayTargetName"
+        },
+        "CredentialProviderConfigurations": [
+          {
+            "CredentialProviderType": "GATEWAY_IAM_ROLE"
+          }
+        ],
+        "TargetConfiguration": {
+          "Mcp": {
+            "Lambda": {
+              "LambdaArn": {
+                "Fn::GetAtt": [
+                  "ToolsFunction",
+                  "Arn"
+                ]
+              },
+              "ToolSchema": {
+                "InlinePayload": [
+                  {
+                    "Name": "commit_sales",
+                    "Description": "Validate explicit synthetic transcript facts and commit a replay-protected CRM snapshot.",
+                    "InputSchema": {
+                      "Type": "object",
+                      "Properties": {
+                        "operation": {
+                          "type": "string",
+                          "enum": [
+                            "commit_sales"
+                          ]
+                        },
+                        "opportunity_id": {
+                          "type": "string"
+                        },
+                        "request_id": {
+                          "type": "string"
+                        },
+                        "transcript": {
+                          "type": "string"
+                        },
+                        "intent_hash": {
+                          "type": "string"
+                        },
+                        "facts": {
+                          "type": "object",
+                          "properties": {
+                            "stage": {
+                              "type": "string"
+                            },
+                            "renewal_date": {
+                              "type": "string"
+                            },
+                            "contract_amount": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      },
+                      "Required": [
+                        "operation",
+                        "opportunity_id",
+                        "request_id",
+                        "transcript",
+                        "intent_hash",
+                        "facts"
+                      ]
+                    }
+                  },
+                  {
+                    "Name": "get_opportunity",
+                    "Description": "Read the saved synthetic opportunity snapshot.",
+                    "InputSchema": {
+                      "Type": "object",
+                      "Properties": {
+                        "operation": {
+                          "type": "string",
+                          "enum": [
+                            "get_opportunity"
+                          ]
+                        },
+                        "opportunity_id": {
+                          "type": "string"
+                        }
+                      },
+                      "Required": [
+                        "operation",
+                        "opportunity_id"
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "RuntimeRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "bedrock-agentcore.amazonaws.com"
+              },
+              "Action": "sts:AssumeRole",
+              "Condition": {
+                "StringEquals": {
+                  "aws:SourceAccount": {
+                    "Ref": "AWS::AccountId"
+                  }
+                },
+                "ArnLike": {
+                  "aws:SourceArn": {
+                    "Fn::Sub": "arn:${AWS::Partition}:bedrock-agentcore:${AWS::Region}:${AWS::AccountId}:runtime/${RuntimeName}-*"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "Policies": [
+          {
+            "PolicyName": "ScopedStarterAccess",
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "bedrock:InvokeModel"
+                  ],
+                  "Resource": {
+                    "Fn::Sub": "arn:${AWS::Partition}:bedrock:${AWS::Region}::foundation-model/${ModelId}"
+                  }
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "bedrock-agentcore:InvokeGateway"
+                  ],
+                  "Resource": {
+                    "Fn::GetAtt": [
+                      "Gateway",
+                      "GatewayArn"
+                    ]
+                  }
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "ecr:BatchGetImage",
+                    "ecr:GetDownloadUrlForLayer"
+                  ],
+                  "Resource": {
+                    "Fn::Sub": "arn:${AWS::Partition}:ecr:${AWS::Region}:${AWS::AccountId}:repository/${EcrRepositoryName}"
+                  }
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "ecr:GetAuthorizationToken"
+                  ],
+                  "Resource": "*"
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "logs:DescribeLogStreams",
+                    "logs:CreateLogGroup"
+                  ],
+                  "Resource": {
+                    "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/bedrock-agentcore/runtimes/${RuntimeName}-*"
+                  }
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "logs:DescribeLogGroups"
+                  ],
+                  "Resource": {
+                    "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:*"
+                  }
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "logs:CreateLogStream",
+                    "logs:PutLogEvents"
+                  ],
+                  "Resource": {
+                    "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/bedrock-agentcore/runtimes/${RuntimeName}-*:log-stream:*"
+                  }
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "logs:PutResourcePolicy"
+                  ],
+                  "Resource": {
+                    "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/bedrock-agentcore/runtimes/${RuntimeName}-*"
+                  }
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "bedrock-agentcore:GetWorkloadAccessToken"
+                  ],
+                  "Resource": [
+                    {
+                      "Fn::Sub": "arn:${AWS::Partition}:bedrock-agentcore:${AWS::Region}:${AWS::AccountId}:workload-identity-directory/default"
+                    },
+                    {
+                      "Fn::Sub": "arn:${AWS::Partition}:bedrock-agentcore:${AWS::Region}:${AWS::AccountId}:workload-identity-directory/default/workload-identity/${RuntimeName}-*"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  },
+  "Outputs": {
+    "GatewayUrl": {
+      "Value": {
+        "Fn::GetAtt": [
+          "Gateway",
+          "GatewayUrl"
+        ]
+      }
+    },
+    "GatewayArn": {
+      "Value": {
+        "Fn::GetAtt": [
+          "Gateway",
+          "GatewayArn"
+        ]
+      }
+    },
+    "GatewayId": {
+      "Value": {
+        "Fn::GetAtt": [
+          "Gateway",
+          "GatewayIdentifier"
+        ]
+      }
+    },
+    "RuntimeRoleArn": {
+      "Value": {
+        "Fn::GetAtt": [
+          "RuntimeRole",
+          "Arn"
+        ]
+      }
+    },
+    "CrmTableName": {
+      "Value": {
+        "Ref": "CrmTable"
+      }
+    },
+    "ToolsFunctionName": {
+      "Value": {
+        "Ref": "ToolsFunction"
+      }
+    },
+    "LogKeyArn": {
+      "Value": {
+        "Fn::GetAtt": [
+          "LogKey",
+          "Arn"
+        ]
+      }
+    },
+    "GatewayTargetName": {
+      "Value": {
+        "Ref": "GatewayTargetName"
+      }
+    }
+  }
+}

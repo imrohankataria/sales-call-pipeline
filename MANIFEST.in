@@ -1,0 +1,8 @@
+include Dockerfile config.example.json .gitignore .dockerignore .env.example AGENTS.md CLAUDE.md HARNESS.md
+exclude .env config.local.json deployment.local.json
+recursive-include infra *.json *.md
+recursive-include prompts *.md
+recursive-include docs *.md *.svg
+recursive-include examples *.json
+recursive-include scripts *.py
+recursive-include tests *.py
