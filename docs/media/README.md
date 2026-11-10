@@ -1,5 +1,9 @@
 # Product demo
 
+Play the video directly in [the repository README](../../README.md#watch-the-demo--83-seconds).
+
+https://github.com/user-attachments/assets/67256474-a2a2-4755-af2f-759b55d771ac
+
 `sales-call-pipeline.mp4` is the final 83.5-second, 1920 × 1080 product demo.
 The narration uses Rohan's existing MOSS voice. Captions are provided as SRT
 and VTT. `verification.json` records the exact video checksum and measured
