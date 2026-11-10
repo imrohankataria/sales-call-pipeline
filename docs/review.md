@@ -17,7 +17,7 @@ configuration. Documentation links and the exact uploaded video checksum were
 checked. A publication-file pattern scan found no credentials, private paths
 or known deployment identifiers; pattern matching has limits.
 
-The 83.5-second video is included in `docs/media`, with captions and a compact
+The 96-second video is included in `docs/media`, with captions and a compact
 verification receipt. Private setup files, raw recordings, model weights and
 live deployment evidence are excluded. See [the video walkthrough](video-walkthrough.md)
 for the implemented scope and its differences from the portable package.

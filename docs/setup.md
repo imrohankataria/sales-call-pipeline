@@ -4,7 +4,11 @@ Codex reads [AGENTS.md](../AGENTS.md); Claude imports it through
 [CLAUDE.md](../CLAUDE.md). Other coding harnesses use
 [HARNESS.md](../HARNESS.md) and the [setup prompt](../prompts/setup-first.md).
 
-## Create the private setup files
+## Prepare Python and create the private setup files
+
+Start with [the local setup prompt](../prompts/02-local.md). After uv is installed,
+the harness runs `uv run --no-project --python 3.12 python scripts/bootstrap.py`.
+It prepares the environment before invoking any Python setup command.
 
 ```bash
 python scripts/check_setup.py --init --mode local
@@ -25,9 +29,11 @@ only the fields for the selected route. Keep all template values blank.
 
 The file uses literal `KEY=value`, optionally surrounded by matching quotes.
 The checker never executes it, exports variables or prints their values.
-The current workflow does not automatically load `.env`: AWS uses the standard
-credential chain, and Slack/API-runner entries are preparation for selected
-extensions. A key in a file is not a working integration.
+The portable workflow does not automatically load `.env`; AWS uses its standard
+credential chain. The supplied `pipeline_deploy.py` and `pipeline_slack.py` helpers
+read this file as literal private configuration, without executing it or echoing
+values. Slack/API-runner fields are only used on the selected route. A key in a
+file is not a working integration.
 
 ## AWS: reuse or create, then sign in
 
@@ -72,8 +78,9 @@ when prerequisites are missing. Never ask for a password or key in the chat.
 
 Slack is optional. The portable package does not include its adapter. The included
 [AWS/Slack reference](../reference/slack-agentcore/README.md) contains the signed
-ingress and worker code shown in the video, with additional deployment wiring
-and application grants. The steps below prepare the selected workspace and app.
+ingress and worker code shown in the video, with deployable infrastructure and
+private grant/verification helpers. Use [the Slack prompt](../prompts/04-slack.md)
+and [helper guide](prompt-deployment.md). The steps below explain the provider UI.
 
 1. Reuse the intended workspace and app. If missing, help create a workspace at
    [Slack](https://slack.com/get-started), then create an app **From scratch**
@@ -95,7 +102,11 @@ and application grants. The steps below prepare the selected workspace and app.
    SDK/API request. Keep the token out of command arguments and tool output;
    report success or an error code. Check selected app scopes and transport
    settings in the app UI. Do not send messages or invite users for this check.
-6. Record authentication as verified only after those checks. Implement and
+6. Set `SLACK_TEAM_ID`, `SLACK_USER_ID`, `SLACK_TEST_CHANNEL_ID` and optional
+   `SLACK_SKILL_GRANTS` privately. Generate the app manifest with the helper,
+   confirm the selected permissions and secret storage, then run its `configure`
+   action. The supplied route is HTTP; Socket Mode remains an optional extension.
+   Record authentication as verified only after those checks. Configure and
    test the selected ingress, user mapping and tool access before claiming a
    functioning Slack workflow. Add OAuth callback/token storage and consent
    handling separately if distributing the app across workspaces;

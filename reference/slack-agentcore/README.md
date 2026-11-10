@@ -50,8 +50,12 @@ binds this source copy to its origin.
 ## Configure a deployment
 
 Start with the repository's [account and authentication guide](../../docs/setup.md).
-The portable [deployment prompt](../../prompts/deploy-aws.md) applies to the
-top-level package; this reference additionally requires the following wiring:
+Use [the AWS prompt](../../prompts/03-aws.md), [Slack prompt](../../prompts/04-slack.md)
+and [deployment helper guide](../../docs/prompt-deployment.md) to provision this
+reference. `scripts/pipeline_deploy.py` packages and deploys the templates in
+`infra/`; `scripts/pipeline_slack.py` creates a private Slack manifest and verifies
+authentication and the request path. The portable [deployment prompt](../../prompts/deploy-aws.md)
+applies to the top-level package. The supplied reference helpers configure:
 
 | Component | Required configuration |
 |---|---|

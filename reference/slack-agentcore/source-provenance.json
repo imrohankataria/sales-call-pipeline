@@ -4,7 +4,8 @@
     "src/agent_app.py": "Replace the deployment-specific ExpectedBucketOwner literal with required AWS_ACCOUNT_ID configuration.",
     "src/gateway_tools.py": "Remove extra blank lines at EOF; no behavior change.",
     "src/pipeline_reference.py": "Remove extra blank lines at EOF; no behavior change.",
-    "src/revision_reference.py": "Remove extra blank lines at EOF; no behavior change."
+    "src/revision_reference.py": "Remove extra blank lines at EOF; no behavior change.",
+    "infra/*.json": "Parameterize the working deployment, remove interview-only API resources and private literals, keep code artifacts versioned, and bound worker concurrency."
   },
   "files": {
     "src/slack_handlers.py": {
@@ -94,6 +95,22 @@
     "skills/meeting-prep/1.0.0/SKILL.md": {
       "originalSha256": "ac75bc90de6c3318ebf7ff6b7fc4a7f4618b95870b0e4a89727361021064a9ed",
       "publishedSha256": "ac75bc90de6c3318ebf7ff6b7fc4a7f4618b95870b0e4a89727361021064a9ed"
+    },
+    "infra/foundation.json": {
+      "originalSha256": "eb63839de2578a20b37c7bcd85fa517dad997f9c07a35da6a8262dab4fb64f77",
+      "publishedSha256": "c06bfce9509acbfb6ed66d507fe06f33d2c62f5ff3423712abeac2e65cf621d8"
+    },
+    "infra/app.json": {
+      "originalSha256": "9466ec959463a85483d59107d2a1c5b1cab264c7448f47145d3ac2135fcf2e67",
+      "publishedSha256": "0547a6406616d2e40487a4b5b6c77a4572e33fe38e3f83e4f3ce77c5cfd16eca"
+    },
+    "infra/gtm.json": {
+      "originalSha256": "b91115ad1028d28cb34f5a4c665a0a48aacfdad4ff0d64e4f47715641104696a",
+      "publishedSha256": "2a3bdbe49b26a97a69dc9d2e1a956f303f7d0cd414fa93aa0b8fbbf66257ca53"
+    },
+    "infra/app-gtm.json": {
+      "originalSha256": "3dc7632866119d56d021d80f8901335c9e1b83c91c4bc88b951f8b306fc6ac10",
+      "publishedSha256": "9c901505d938d58ed2f8666083f42b140cea3e45f0d215495cd51743a759033b"
     }
   }
 }

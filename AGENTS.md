@@ -1,12 +1,13 @@
 # Sales Call Pipeline: setup first
 
-Read `README.md` and `docs/setup.md` before starting. Apply these instructions
+Read `README.md`, `docs/setup.md`, and any ignored `.local/aws-rules.md` before starting. Apply these instructions
 to Codex, Claude and other coding harnesses working in this repository.
 
 1. Establish the requested route: local demo, AWS deployment, or an AWS workflow
    with a Slack extension. Reuse the user's existing choice. Require only the
    accounts and credentials needed by that route.
-2. Run `python scripts/check_setup.py --init --mode local`. Preserve existing
+2. Prepare uv/Python first using `prompts/02-local.md` and `scripts/bootstrap.py`;
+   then run `python scripts/check_setup.py --init --mode local`. Preserve existing
    `.env`, `config.local.json`, accounts, Slack apps and AWS profiles. Open the
    private `.env` for entries; inspect presence with the checker, never by
    printing or sending its contents to the model.
@@ -33,10 +34,14 @@ command arguments or Runtime environment configuration. Do not execute `.env`
 as a shell script. Use appropriate service secret storage for a deployed
 extension; the Runtime uses IAM service roles for AWS access.
 
-For the portable package, Slack ingress, user grants and enterprise OAuth are extension work. The source behind the video is preserved separately in `reference/slack-agentcore`; read its README before working on that route. Creating a
+For the portable package, Slack is a separate route. The source behind the video
+is in `reference/slack-agentcore`, with deployable templates and helpers in
+`scripts/pipeline_*.py`. Follow `prompts/00-start.md` or the four numbered prompts
+for Toolkit setup, local checks, AWS deployment and Slack. Read its README and
+`docs/prompt-deployment.md` before working on that route. Creating a
 Slack app or filling its tokens does not implement that work. Do not send Slack
 messages, invite users or post socially as an authentication check. Keep this
-package synthetic; distinguish a prepared account, verified authentication,
+demo bounded to its existing demo-data contract; distinguish a prepared account, verified authentication,
 implemented adapter and tested end-to-end workflow in the final status.
 
 Limit work to this repository. Preserve user changes and unrelated projects.

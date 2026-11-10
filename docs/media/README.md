@@ -1,22 +1,18 @@
 # Product demo
 
-Play the video directly in [the repository README](../../README.md#watch-the-demo--83-seconds).
+The 96-second [video](sales-call-pipeline.mp4) uses the approved animation with the
+final audio clarity pass. [Captions](sales-call-pipeline.srt) accompany it.
 
-https://github.com/user-attachments/assets/67256474-a2a2-4755-af2f-759b55d771ac
+The narration uses Rohan’s existing MOSS voice. The clarity revision reduces
+low-mid weight and adds speech presence without cuts, tempo changes or new joins.
+The approved picture and timing were copied unchanged. Clear Pulse is the
+original project instrumental. The verification file binds the exact MP4 hash.
 
-`sales-call-pipeline.mp4` is the final 83.5-second, 1920 × 1080 product demo.
-The narration uses Rohan's existing MOSS voice. Captions are provided as SRT
-and VTT. `verification.json` records the exact video checksum and measured
-audio/export properties.
-
-The animation and **Clear Pulse** instrumental are original project assets.
-The film was built with the MIT-licensed
+Built with the MIT-licensed
 [Digital Samba Claude Code Video Toolkit](https://github.com/digitalsamba/claude-code-video-toolkit).
-The final video is included directly in Git, so the demo stays available with
-the repository. Private credentials, raw recordings and model weights are not
-part of these media assets.
+No private credentials, raw recordings or model weights are included.
 
-The source-code MIT license applies to code. The video, artwork, narration and
-Rohan's voice/likeness are reserved to Rohan Kataria; viewing and linking the
-demo are permitted. The repository does not grant permission to clone the
-voice or reuse the likeness.
+The source-code MIT license applies to code. Video, artwork, narration and
+Rohan’s voice/likeness are reserved to Rohan Kataria. Viewing and linking the demo
+are permitted; this repo does not grant permission to clone the voice or reuse
+the likeness.

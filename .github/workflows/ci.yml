@@ -32,3 +32,13 @@ jobs:
           PYTHONPATH: reference/slack-agentcore/src
           AWS_EC2_METADATA_DISABLED: 'true'
           AWS_DEFAULT_REGION: us-east-2
+  deployment-artifacts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install cfn-lint
+      - run: cfn-lint reference/slack-agentcore/infra/*.json -r us-east-2
+      - run: python scripts/pipeline_deploy.py package

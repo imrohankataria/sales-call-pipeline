@@ -1,111 +1,135 @@
 1
-00:00:01,200 --> 00:00:02,980
-Imagine your best sales call.
+00:00:00,000 --> 00:00:02,620
+Imagine a sales rep making a great customer call.
 
 2
-00:00:03,100 --> 00:00:07,300
-Then come the notes, missing context, and the account executive asking, “Who
+00:00:02,820 --> 00:00:06,100
+A transcript captures the conversation, but the rep still
 
 3
-00:00:07,300 --> 00:00:07,980
-did we speak to?”
+00:00:06,100 --> 00:00:08,580
+copies notes into a record by hand.
 
 4
-00:00:08,160 --> 00:00:10,060
-I built this workflow in production.
+00:00:08,780 --> 00:00:11,480
+Across a thousand reps, the calls keep coming.
 
 5
-00:00:10,320 --> 00:00:13,020
-This repository brings that approach to life on AWS.
+00:00:11,720 --> 00:00:15,200
+The account executive asks for context, the manager chases
 
 6
-00:00:13,340 --> 00:00:17,260
-In Slack, reps can see their permitted skills, then choose call review.
+00:00:15,200 --> 00:00:18,540
+targets, and manual handoffs become the bottleneck.
 
 7
-00:00:17,620 --> 00:00:22,060
-The server verifies the request and their access, queues the transcript, and
+00:00:18,920 --> 00:00:22,580
+A good call should not end in missing information.
 
 8
-00:00:22,060 --> 00:00:24,020
-a worker calls AgentCore.
+00:00:22,980 --> 00:00:26,380
+This pipeline applies a pattern from my production experience.
 
 9
-00:00:24,020 --> 00:00:28,720
-AgentCore Runtime hosts our Python workflow, which loads a versioned skill file
+00:00:26,380 --> 00:00:30,640
+In Slack, Sam asks for available skills.
 
 10
-00:00:28,720 --> 00:00:29,300
-from S3.
+00:00:30,980 --> 00:00:34,320
+The app checks access and privately returns the permitted
 
 11
-00:00:29,460 --> 00:00:32,700
-That playbook tells the model how to review the call, while Python
+00:00:34,320 --> 00:00:34,780
+tasks.
 
 12
-00:00:32,700 --> 00:00:34,060
-controls the tools.
+00:00:35,040 --> 00:00:37,040
+A teammate sees fewer skills.
 
 13
-00:00:34,320 --> 00:00:38,860
-Python asks Nova Lite, the language model in Bedrock, to propose facts
+00:00:37,480 --> 00:00:40,440
+Call review is missing, and requesting it directly is
 
 14
-00:00:38,860 --> 00:00:40,520
-with supporting quotes from the transcript.
+00:00:40,440 --> 00:00:40,780
+denied.
 
 15
-00:00:41,000 --> 00:00:44,260
-MCP gives Python one standard interface to the data tools.
+00:00:41,340 --> 00:00:43,620
+Sam sends the transcript for review.
 
 16
-00:00:44,800 --> 00:00:48,780
-AgentCore Gateway routes each call to code that checks permission and evidence
+00:00:44,180 --> 00:00:47,160
+Slack confirms it is queued, while the work continues
 
 17
-00:00:48,780 --> 00:00:50,140
-before saving in DynamoDB.
+00:00:47,160 --> 00:00:47,860
+in the background.
 
 18
-00:00:50,540 --> 00:00:53,780
-The result returns through Python to the worker, which posts it back
+00:00:48,200 --> 00:00:50,640
+The app verifies the signed Slack request.
 
 19
-00:00:53,780 --> 00:00:54,160
-to Slack.
+00:00:51,020 --> 00:00:53,720
+A queue hands it to a worker, which rechecks
 
 20
-00:00:54,500 --> 00:00:57,480
-When the rep asks for meeting prep in Slack, the same engine
+00:00:53,720 --> 00:00:56,160
+access and starts the Python workflow.
 
 21
-00:00:57,480 --> 00:01:01,220
-loads that skill, reads the saved record through MCP, and returns a
+00:00:56,680 --> 00:01:00,120
+AWS AgentCore Runtime hosts that workflow.
 
 22
-00:01:01,220 --> 00:01:01,380
-brief.
+00:01:00,340 --> 00:01:03,860
+It loads the selected skill instructions from S3, which
 
 23
-00:01:01,580 --> 00:01:06,520
-In my production workflow, Salesforce held the shared record, including buyer intent,
+00:01:03,860 --> 00:01:05,900
+tell the language model what to extract.
 
 24
-00:01:06,840 --> 00:01:08,460
-next steps and call warmth.
+00:01:06,400 --> 00:01:10,100
+Nova proposes facts, then Python calls tools through the
 
 25
-00:01:08,720 --> 00:01:14,320
-That context helps account executives prepare and managers coach from wins and
+00:01:10,100 --> 00:01:11,040
+MCP gateway.
 
 26
-00:01:14,320 --> 00:01:14,660
-losses.
+00:01:11,380 --> 00:01:14,500
+The tools check permission and evidence before saving the
 
 27
-00:01:14,980 --> 00:01:19,720
-With less busywork and fewer handoffs, let your sales organization do what
+00:01:14,500 --> 00:01:16,180
+shared record in DynamoDB.
 
 28
-00:01:19,720 --> 00:01:21,880
-it does best: win sales for you.
+00:01:16,640 --> 00:01:19,460
+The worker saves the result and replies in Slack
+
+29
+00:01:19,460 --> 00:01:21,040
+with the checked stage and amount.
+
+30
+00:01:21,260 --> 00:01:24,540
+A separate meeting prep command reads those saved facts
+
+31
+00:01:24,540 --> 00:01:27,120
+before the model drafts a brief, so the next
+
+32
+00:01:27,120 --> 00:01:29,980
+teammate gets shared context without another handoff.
+
+33
+00:01:30,200 --> 00:01:33,060
+Let the sales organization do what it does best:
+
+34
+00:01:33,240 --> 00:01:34,400
+win sales for you.

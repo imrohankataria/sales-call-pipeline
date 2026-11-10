@@ -1,22 +1,18 @@
 {
-  "durationSeconds": 83.5,
+  "durationSeconds": 96.0,
   "resolution": "1920x1080",
   "fps": 30,
-  "videoSha256": "99cdad7fdd5bc7f294cd1574f7930ef71270a6d3f5e300518187b2a0b1170fe5",
-  "voiceSha256": "229bf8aa578bd6e0c3da8d3fe2a8fc0e275612006738e560b04bd0d816dd8d07",
-  "audioLufs": -18.03,
-  "audioTruePeak": -1.5,
-  "decodedTranscriptWer": 0.044444444444444446,
+  "videoSha256": "c47486f87520838d0e98367bf365cae7597a4097f97fdce6db3de53381758c44",
+  "voiceSha256": "b20eb360f691559f092c85b60d1ca39979f9d798bd28bbb863b50028e3d32433",
+  "audioLufs": -18.0,
+  "audioTruePeak": -2.06,
+  "decodedTranscriptWer": 0.012605042016806723,
+  "voiceTempoFactor": 1.0,
+  "pictureCopiedUnchanged": true,
+  "audioRevision": "Continuous tone correction and gentle levelling; no resynthesis, timing edits or new joins",
   "musicTitle": "Clear Pulse",
   "musicLicense": "Original project composition",
-  "musicAttribution": "Clear Pulse: original instrumental composed programmatically for this video. Soft sustained major harmony and a restrained bass pulse; no lead melody or transition effects.",
-  "voiceTempoFactor": 1.1,
-  "cadenceMeasurements": {
-    "wordCount": 225,
-    "detectedInteriorGaps": 58,
-    "longMidSentenceGaps": 0,
-    "longMidSentenceGapsPer100Words": 0.0
-  },
   "file": "sales-call-pipeline.mp4",
-  "publicationAuthorization": "Repository and video upload requested by Rohan in this chat."
+  "publicationAuthorization": "Rohan explicitly requested publishing this exact clarity revision in the current chat.",
+  "githubAttachment": "https://github.com/user-attachments/assets/29b589b2-7bbe-4c6b-8fcb-314764c5ba94"
 }

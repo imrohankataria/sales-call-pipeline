@@ -1,73 +1,66 @@
 # Sales Call Pipeline
 
-**Keep the context from a good sales call. Cut the handoffs that follow.**
+**Keep the context from a good call. Give the next teammate what they need.**
 
-Turn a transcript into checked opportunity facts, a shared record and meeting prep. Built from a pattern in Rohan’s production experience.
+Review a transcript, save checked opportunity facts, and prepare the next meeting
+from the shared record. Python, AWS AgentCore, MCP tools and Slack, built from a
+pattern in Rohan’s production experience.
 
-## Watch the demo · 83 seconds
+## Watch the demo · 96 seconds
 
-https://github.com/user-attachments/assets/67256474-a2a2-4755-af2f-759b55d771ac
+https://github.com/user-attachments/assets/29b589b2-7bbe-4c6b-8fcb-314764c5ba94
 
-[Captions](docs/media/sales-call-pipeline.srt) · [MP4](docs/media/sales-call-pipeline.mp4) · [Video → code](docs/video-walkthrough.md)
+[Download MP4](docs/media/sales-call-pipeline.mp4)
 
-## Start with Codex
+[Captions](docs/media/sales-call-pipeline.srt) · [Video → code](docs/video-walkthrough.md)
 
-Clone the repository, open the folder in Codex, then copy a prompt below.
+## Start with one prompt
 
-```bash
-git clone https://github.com/imrohankataria/sales-call-pipeline.git
-cd sales-call-pipeline
-```
-
-### 1. Set up accounts and keys
+Open Codex, Claude Code or your coding harness in a working folder and copy:
 
 ```text
-Set up Sales Call Pipeline. Read AGENTS.md and docs/setup.md.
-Create .env and config.local.json only if missing; preserve existing work.
-Ask whether I want local mode or the AWS/Slack reference, unless already chosen.
-Reuse my accounts, Slack app and AWS profile. Help me create anything missing
-and complete sign-in. I will enter keys privately in .env and finish MFA or
-provider consent in the browser. Never print secrets or ask for them in chat.
-Use AWS CLI login/SSO, not static keys. Verify authentication, Region and
-required permissions before integration work. Run the setup checker and report
-only missing field names and the next step. Do not upgrade plans or deploy yet.
+Set up https://github.com/imrohankataria/sales-call-pipeline.
+Clone it into a new sales-call-pipeline folder if it is not already open.
+Read AGENTS.md and follow prompts/00-start.md through all four stages:
+AWS Agent Toolkit and local AWS access, local tests/demo, AWS deployment, Slack.
+Reuse my accounts, named AWS profile, verified Region and suitable Slack app.
+Preserve my existing work. I will complete sign-in/MFA and provider consent,
+and enter secrets privately in .env; never ask for tokens in this chat.
+Show the cloud resource/cost plan and wait for my approval before deployment.
+Run the supplied helpers and verify the real request path, including permitted
+skills, denied access, queued call review, the shared record and meeting prep.
+Use my explicitly approved demo channel for test results. Record what actually
+passed, explain any action I must finish, and resume afterward. Keep secrets
+and deployment identifiers out of Git. Finish with a working demo and a
+keep-or-clean-up choice for the dedicated resources.
 ```
 
-### 2. Run locally and extend
+Prefer smaller steps? Each link contains a copyable prompt:
 
-```text
-Run Sales Call Pipeline locally. Read AGENTS.md and complete docs/setup.md.
-Use Python 3.12+, create a virtual environment, install the portable package,
-run its tests and python -m gtm_starter. Local mode needs no keys or AWS calls.
-Preserve my existing files. Explain how call-review saves checked facts and
-meeting-prep reads them. Show the skill files, Python routing and validation.
-Then help me add one skill with a clear input/output contract and acceptance
-checks. Keep credentials out of Git. Do not deploy as part of this task.
-```
-
-### 3. Set up the AWS/Slack workflow in the video
-
-```text
-Help me set up the AWS/Slack workflow shown in the video.
-Read AGENTS.md, docs/setup.md and reference/slack-agentcore/README.md.
-Inspect the reference code and reuse existing AWS resources and Slack settings.
-Create private setup files only if missing. Help me fill .env privately and
-verify AWS login/SSO, the assigned Region, permissions and Slack authentication.
-Explain the Slack → queue → worker → AgentCore Python → model → MCP tools →
-shared record → Slack reply path using this code. Meeting prep is a separate
-request. Show the remaining wiring and resource/cost plan before deployment.
-Do not upgrade plans, expose secrets or send Slack test messages without my
-request. Distinguish existing deployment evidence from this checkout's status.
-```
-
-## Where to look
-
-| Path | Purpose |
+| Step | Prompt |
 |---|---|
-| [`src/gtm_starter`](src/gtm_starter) | Portable Python workflow, local SQLite demo and cloud adapters |
-| [`reference/slack-agentcore`](reference/slack-agentcore/README.md) | AWS/Slack reference shown in the video, with its request path and configuration |
-| [`SKILL.md` files](src/gtm_starter/skills) | Versioned task instructions; Python runs the workflow and tools check writes |
+| 1. AWS guidance and sign-in | [Install AWS Agent Toolkit](prompts/01-aws-toolkit.md) |
+| 2. Local code and tests | [Run the local workflow](prompts/02-local.md) |
+| 3. Deploy to AWS | [Deploy the pipeline](prompts/03-aws.md) |
+| 4. Slack app and workflow | [Connect and test Slack](prompts/04-slack.md) |
 
-The portable package and AWS/Slack reference are separate paths. A fresh clone needs configuration; the reference checks three opportunity fields. Broader Salesforce and coaching examples come from Rohan’s production experience.
+The harness runs the commands. You complete account verification, MFA, billing
+approval and workspace consent. Local mode needs no cloud credentials.
 
-[Setup](docs/setup.md) · [Package guide](docs/package-guide.md) · [Portable AWS deployment](prompts/deploy-aws.md) · [Verification scope](docs/review.md)
+## Try it in Slack
+
+```text
+/gtm skills
+/gtm call-review demo-001 | The stage is Proposal. The renewal date is 2027-02-01. The contract amount is USD 24000.
+/gtm meeting-prep demo-001
+```
+
+The permitted task list is private. Call review queues work and replies when
+checked facts are saved. Meeting prep is a separate request that reads them.
+
+[Setup](docs/setup.md) · [Deployment helpers](docs/prompt-deployment.md) ·
+[Prompt retest](docs/prompt-retest.md) · [Architecture and source](reference/slack-agentcore/README.md)
+
+The deployed route stores three checked fields in DynamoDB. The portable local
+package uses SQLite. Connectors for calling software and Salesforce are future
+extensions; the current source and acceptance checks define this repo’s behavior.

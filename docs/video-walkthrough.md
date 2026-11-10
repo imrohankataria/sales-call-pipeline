@@ -25,9 +25,9 @@ evidence checks, request replay protection, user/task grants, queued execution
 and record-backed meeting preparation. A successful write remains the tool's
 decision. The model's confidence alone is not permission to save.
 
-The broader production-experience segment describes Salesforce, intent,
-next steps, call warmth and coaching. Those richer fields and integrations are
-not implemented by this three-field reference. No revenue uplift or unlimited
+The production-experience framing explains the pattern’s purpose. Richer
+Salesforce, intent, next-step and coaching integrations are outside this
+three-field reference. No revenue uplift or unlimited
 capacity is claimed. The 1,000+ SDR scene is a scenario illustrating handoff
 pressure, rather than a throughput benchmark.
 
@@ -42,6 +42,9 @@ Original live verification took place in Rohan's existing AWS/Slack setup.
 Private resource identifiers, credentials, deployment records and Slack
 screenshots stay outside this repository. Local tests and GitHub CI validate
 code contracts; they do not provision infrastructure or establish a production
-SLA. See the reference README for deployment requirements and delivery limits.
+SLA. The public reference now includes parameterized deployment templates,
+packaging, Slack manifest/grant helpers and numbered setup prompts. See
+[prompt-driven deployment](prompt-deployment.md) and the
+[separate retest](prompt-retest.md) for current verification scope.
 
 Three copied dependency files also have redundant trailing blank lines removed.
