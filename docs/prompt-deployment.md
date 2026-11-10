@@ -58,6 +58,13 @@ presentation only: it does not send pipeline data to that site or affect access.
 Call review allows up to three model calls with 640 output tokens each;
 meeting prep allows one with 500. These are the reference’s deployed limits.
 
+The SQS mapping limits worker jobs to two at a time. It uses shared Lambda
+capacity rather than reserving executions, so it also works with a new project's
+10-execution quota. Before any stack changes, the helper checks available
+unreserved capacity and records it privately. Other functions can still compete
+for that capacity; throttled work stays in the queue for retry. This is a bounded
+reference deployment, not a guarantee of throughput at arbitrary volume.
+
 On updates the helper saves the previous code keys, catalog key and live `demo`
 Runtime version in private `deployment.local.json` history. Keep that file backed
 up privately. For rollback, point the `demo` endpoint to that Runtime

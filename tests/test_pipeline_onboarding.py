@@ -5,6 +5,7 @@ import sys
 import tempfile
 import unittest
 import zipfile
+from unittest.mock import patch
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -33,7 +34,31 @@ class OnboardingTests(unittest.TestCase):
             walk(template)
         self.assertEqual(built['gtm']['Resources']['Gateway']['Properties']['AuthorizerType'], 'AWS_IAM')
         self.assertEqual(built['gtm']['Resources']['Queue']['Properties']['VisibilityTimeout'], 720)
-        self.assertEqual(built['gtm']['Resources']['WorkerFunction']['Properties']['ReservedConcurrentExecutions'], 2)
+
+    def test_worker_deploys_with_ten_unreserved_executions(self):
+        resources = templates()['gtm']['Resources']
+        # The real fresh project has a total of 10 and must leave 10 unreserved.
+        reserved = resources['WorkerFunction']['Properties'].get('ReservedConcurrentExecutions', 0)
+        self.assertLessEqual(reserved, 10 - 10)
+        self.assertEqual(resources['QueueMapping']['Properties']['ScalingConfig']['MaximumConcurrency'], 2)
+
+    def test_insufficient_lambda_capacity_stops_before_state_or_cloud_changes(self):
+        class ReadClient:
+            def get_caller_identity(self): return {'Account': 'example-project'}
+            def get_account_plan_state(self): return {'accountPlanType': 'FREE'}
+            def list_agent_runtimes(self, **kwargs): return {'agentRuntimes': []}
+            def get_account_settings(self):
+                return {'AccountLimit': {'ConcurrentExecutions': 10, 'UnreservedConcurrentExecutions': 1}}
+            def validate_template(self, **kwargs):
+                raise ValueError('CloudFormation reached before capacity check')
+        config = {'aws_region': 'us-east-2', 'project_name': 'pipeline-test',
+                  'runtime_name': 'pipeline_test', 'model_id': 'amazon.nova-lite-v1:0'}
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / 'state.json'
+            with patch.object(deploy, 'session_for', return_value=(None, lambda name: ReadClient())):
+                with self.assertRaisesRegex(ValueError, 'unreserved Lambda'):
+                    deploy.deploy(config, path)
+            self.assertFalse(path.exists())
 
     def test_lambda_bundle_excludes_private_incidental_files(self):
         with tempfile.TemporaryDirectory() as tmp:

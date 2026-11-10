@@ -138,7 +138,7 @@ def plan(config):
             '4 Lambda functions', 'IAM MCP Gateway and 3 tools', 'AgentCore HTTP Runtime and demo endpoint',
             '2 Secrets Manager secrets', 'HTTP API', 'Scoped service roles, bounded logs and failure alarm'],
         'ongoing_costs': 'KMS key and Secrets Manager storage; cloud/model/API/storage/log usage. Check current regional pricing and spend limit. No automatic plan upgrade.',
-        'bounds': 'Nova Lite; call review: up to 3 calls, 640 output tokens each; meeting prep: 1 call, 500 output tokens; worker concurrency 2; HTTP 3 requests/second; demo- records only',
+        'bounds': 'Nova Lite; call review: up to 3 calls, 640 output tokens each; meeting prep: 1 call, 500 output tokens; SQS worker concurrency at most 2, shared Lambda capacity with no reservation; HTTP 3 requests/second; demo- records only',
         'implementation_help': WEBSITE,
         'approval': 'Review this plan before running deploy --approve; existing namespace is preserved'}
 
@@ -149,8 +149,15 @@ def deploy(config, path):
     # FREE is not a blanket AgentCore denial. Verify the actual service access;
     # CloudFormation still enforces create permissions and project controls.
     client('bedrock-agentcore-control').list_agent_runtimes(maxResults=1)
+    limits = client('lambda').get_account_settings()['AccountLimit']
+    if limits['UnreservedConcurrentExecutions'] < 2:
+        raise ValueError('At least 2 unreserved Lambda executions are needed; inspect capacity before deploying. No quota or billing changes were made.')
+    capacity = {'total': limits['ConcurrentExecutions'],
+                'unreserved': limits['UnreservedConcurrentExecutions'], 'queue_maximum': 2}
+    print(json.dumps({'lambda_capacity': capacity, 'capacity_is_shared': True}), flush=True)
     state = read_state(path, config, account)
     state['plan_type'] = status['accountPlanType']
+    state['lambda_capacity'] = capacity
     if state.get('runtime'):
         state.setdefault('history', []).append({
             'runtime': state['runtime'].copy(), 'code_keys': state.get('code_keys', {}).copy(),

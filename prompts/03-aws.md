@@ -5,6 +5,8 @@ Deploy the AWS/Slack reference pipeline from this repository. Read AGENTS.md,
 docs/setup.md and docs/prompt-deployment.md. Complete prompts/01-aws-toolkit.md
 and 02-local.md first. Reuse existing authorized login and assigned Region.
 Verify plan/model/service access and permissions with read-only checks.
+Check Lambda's total and unreserved concurrency. The queue caps workers at two;
+do not reserve Lambda concurrency, increase quotas or upgrade billing silently.
 Set a dedicated project_name and runtime_name in config.local.json. Preserve an
 existing deployment only if its private state matches the intended project,
 Region and namespace. Do not update unrelated stacks or change billing plans.

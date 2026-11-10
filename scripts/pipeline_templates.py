@@ -49,7 +49,10 @@ def templates():
             props['VersioningConfiguration'] = {'Status': 'Enabled'}
         if name == 'gtm':
             resources = template['Resources']
-            resources['WorkerFunction']['Properties']['ReservedConcurrentExecutions'] = 2
+            template.setdefault('Metadata', {}).setdefault('AWSToolsMetrics', {})['AWSAgentToolkit'] = 'aws-cloudformation@3'
+            # New projects can have only 10 total executions and must leave all
+            # 10 unreserved. Bound this queue without reserving shared capacity.
+            resources['WorkerFunction']['Properties'].pop('ReservedConcurrentExecutions', None)
             resources['QueueMapping']['Properties']['ScalingConfig'] = {'MaximumConcurrency': 2}
             resources['SlackSecret']['Properties']['Name'] = {'Fn::Sub': '${PipelineName}-slack'}
             resources['AuthSecret']['Properties']['Name'] = {'Fn::Sub': '${PipelineName}-execution-grants'}

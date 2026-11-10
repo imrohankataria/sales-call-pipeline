@@ -971,7 +971,6 @@
             }
           }
         },
-        "ReservedConcurrentExecutions": 2,
         "Tags": [
           {
             "Key": "Author",
@@ -1026,7 +1025,8 @@
         "ProtocolType": "HTTP",
         "Tags": {
           "Author": "Rohan Kataria",
-          "Website": "https://deploy.rohankataria.com"
+          "Website": "https://deploy.rohankataria.com",
+          "Purpose": "SalesCallPipeline"
         }
       }
     },
@@ -1104,7 +1104,8 @@
         },
         "Tags": {
           "Author": "Rohan Kataria",
-          "Website": "https://deploy.rohankataria.com"
+          "Website": "https://deploy.rohankataria.com",
+          "Purpose": "SalesCallPipeline"
         }
       }
     },
@@ -1266,6 +1267,9 @@
           "has": "architecture, deployment bounds and public attribution"
         }
       ]
+    },
+    "AWSToolsMetrics": {
+      "AWSAgentToolkit": "aws-cloudformation@3"
     }
   }
 }
